@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('킹제임스 성경')
+            title: Center(
+              child: Text('킹제임스 성경'))
           ),
           body: TabBarView(
             children: <Widget>[

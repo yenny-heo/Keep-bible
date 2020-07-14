@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keep_bible_app/data/bible.dart';
+import 'package:keep_bible_app/data/korhkjv.dart';
 
 class DetailScreen extends StatefulWidget {
   final String name;
@@ -15,15 +15,15 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final fixedList = Iterable<int>.generate(data[widget.book].length).toList();
+    final fixedList = Iterable<int>.generate(korhkjv[widget.book].length).toList();
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.name),
+          title: Center(child: Text(widget.name)),
           actions: <Widget>[
             DropdownButton<int>(
                 value: chapter,
-                iconEnabledColor: Colors.white,
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                dropdownColor: Colors.indigo,
+                style: TextStyle(color: Colors.white, fontSize: 18),
                 icon: Icon(Icons.arrow_drop_down),
                 onChanged: (int i) {
                   setState(() {
@@ -33,14 +33,28 @@ class _DetailScreenState extends State<DetailScreen> {
                 items: fixedList.map((i) {
                   int a = i + 1;
                   return DropdownMenuItem<int>(value: i, child: Text('$a 장'));
-                }).toList())
+                }).toList()),
+//            DropdownButton<int>(
+//                value: chapter,
+//                dropdownColor: Colors.indigo,
+//                style: TextStyle(color: Colors.white, fontSize: 18),
+//                icon: Icon(Icons.arrow_drop_down),
+//                onChanged: (int i) {
+//                  setState(() {
+//                    chapter = i;
+//                  });
+//                },
+//                items: fixedList.map((i) {
+//                  int a = i + 1;
+//                  return DropdownMenuItem<int>(value: i, child: Text('$a 장'));
+//                }).toList())
           ],
         ),
         body: VerseList(
-          verses: List.generate(data[widget.book][chapter].length,
-              (i) => (data[widget.book][chapter][i])),
+          verses: List.generate(korhkjv[widget.book][chapter].length,
+              (i) => (korhkjv[widget.book][chapter][i])),
           selected:
-              List.generate(data[widget.book][chapter].length, (i) => (false)),
+              List.generate(korhkjv[widget.book][chapter].length, (i) => (false)),
         ));
   }
 }
@@ -66,11 +80,12 @@ class _VerseListState extends State<VerseList> {
             int n = i + 1;
             return Container(
                 decoration: BoxDecoration(
-                    color: widget.selected[i] ? Colors.blueGrey : Colors.white,
+                    color: widget.selected[i] ? Colors.blue : Colors.white,
                     border: Border(bottom: BorderSide(color: Colors.grey, width: 1))),
                 child: ListTile(
+                  leading: Text('$n', style: TextStyle(fontSize: 20, color: widget.selected[i] ? Colors.white : Colors.black)),
                   title: Text(
-                    '$n: $verse',
+                    verse,
                     style: TextStyle(fontSize: 22, color: widget.selected[i] ? Colors.white : Colors.black),
                   ),
                   onTap: () {
