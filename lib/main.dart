@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:keep_bible_app/app_state_notifier.dart';
-import 'package:keep_bible_app/bottom_bar.dart';
-import 'package:keep_bible_app/drawer.dart';
+import 'package:keep_bible_app/navigation/bottom_bar.dart';
+import 'package:keep_bible_app/navigation/drawer.dart';
+import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
-import 'old_new_bible_list/new_bible.dart';
-import 'old_new_bible_list/old_bible.dart';
+import 'page/new_bible.dart';
+import 'page/old_bible.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<AppStateNotifier>(
       create: (context) => AppStateNotifier(), child: MyApp()));
 }
-//
-//class MyApp extends StatefulWidget {
-//  _MyAppState createState() => _MyAppState();
-//}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -26,7 +22,7 @@ class MyApp extends StatelessWidget {
           home: DefaultTabController(
             length: 2,
             child: Scaffold(
-              appBar: AppBar(title: Text('킹제임스 성경')),
+              appBar: AppBar(title: Text('킹제임스 흠정역')),
               drawer: NavDrawer(),
               body: TabBarView(
                 children: <Widget>[
