@@ -5,7 +5,7 @@ import '../detail_list.dart';
 class OldBible extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OldBibleList(bibles: List.generate(oldB.length, (i) => (oldB[i])));
+    return OldBibleList(bibles: List.generate(korOldB.length, (i) => (korOldB[i])));
   }
 }
 
@@ -32,7 +32,7 @@ class OldBibleList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreen(name: oldB[i], book: i)));
+                                DetailScreen(name: korOldB[i], book: i)));
                   },
                 ));
           }),

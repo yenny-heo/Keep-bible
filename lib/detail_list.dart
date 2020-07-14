@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
   final String name;
@@ -78,15 +81,18 @@ class _VerseListState extends State<VerseList> {
           itemBuilder: (context, i) {
             String verse = widget.verses[i];
             int n = i + 1;
+            bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getMode();
+            ThemeData mode = AppTheme.lightMode;
+            isDark ? mode=AppTheme.darkMode : mode=AppTheme.lightMode;
             return Container(
                 decoration: BoxDecoration(
-                    color: widget.selected[i] ? Colors.blue : Colors.white,
+                    color: widget.selected[i] ? mode.scaffoldBackgroundColor : mode.accentColor,
                     border: Border(bottom: BorderSide(color: Colors.grey, width: 1))),
                 child: ListTile(
-                  leading: Text('$n', style: TextStyle(fontSize: 20, color: widget.selected[i] ? Colors.white : Colors.black)),
+                  leading: Text('$n', style: TextStyle(fontSize: 20, color: widget.selected[i] ? mode.accentColor : mode.primaryColor)),
                   title: Text(
                     verse,
-                    style: TextStyle(fontSize: 22, color: widget.selected[i] ? Colors.white : Colors.black),
+                    style: TextStyle(fontSize: 22, color: widget.selected[i] ? mode.accentColor : mode.primaryColor),
                   ),
                   onTap: () {
                     setState(() {
