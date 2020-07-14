@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:keep_bible_app/bible_list/new_bible.dart';
-import 'package:keep_bible_app/bible_list/old_bible.dart';
 import 'package:keep_bible_app/bottom_bar.dart';
+import 'old_new_bible_list/new_bible.dart';
+import 'old_new_bible_list/old_bible.dart';
 
 void main() {
   runApp(MyApp());

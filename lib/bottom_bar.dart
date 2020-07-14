@@ -13,9 +13,9 @@ class Bottom extends StatelessWidget {
           unselectedLabelColor: Colors.grey,
           tabs: <Widget>[
             Tab(
-                child: Text('구약', style: TextStyle(fontSize: 20))),
+                child: Text('구약', style: TextStyle(fontSize: 22))),
             Tab(
-                child: Text('신약', style: TextStyle(fontSize: 20))),
+                child: Text('신약', style: TextStyle(fontSize: 22))),
           ],
         ),),);
   }
