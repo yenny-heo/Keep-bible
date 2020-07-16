@@ -10,14 +10,14 @@ import 'dart:io';
 class DetailScreen extends StatefulWidget {
   final String name;
   final int book;
+  int chapter;
 
-  const DetailScreen({Key key, this.name, this.book}) : super(key: key);
+  DetailScreen({Key key, this.name, this.book, this.chapter}) : super(key: key);
 
   _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  int chapter = 0;
   IconData bookMarkIcon;
 
   @override
@@ -27,7 +27,7 @@ class _DetailScreenState extends State<DetailScreen> {
     List bible = korhkjv;
     bool isDark =
         Provider.of<AppStateNotifier>(context, listen: false).getMode();
-    bookMarks[widget.book][chapter][0]
+    bookMarks[widget.book][widget.chapter][0]
         ? bookMarkIcon = Icons.bookmark
         : bookMarkIcon = Icons.bookmark_border;
     switch (bibleNum) {
@@ -40,14 +40,14 @@ class _DetailScreenState extends State<DetailScreen> {
     }
     Future<File> _setBookmark() {
       setState(() {
-        bookMarks[widget.book][chapter][0] =
-            !bookMarks[widget.book][chapter][0];
-        bookMarks[widget.book][chapter][0]
+        bookMarks[widget.book][widget.chapter][0] =
+            !bookMarks[widget.book][widget.chapter][0];
+        bookMarks[widget.book][widget.chapter][0]
             ? bookMarkIcon = Icons.bookmark
             : bookMarkIcon = Icons.bookmark_border;
       });
 
-      print(bookMarks[widget.book][chapter]);
+      print(bookMarks[widget.book][widget.chapter]);
       return writeBookmark(bookMarks);
     }
 
@@ -59,14 +59,14 @@ class _DetailScreenState extends State<DetailScreen> {
           title: Center(child: Text(widget.name)),
           actions: <Widget>[
             DropdownButton<int>(
-                value: chapter,
+                value: widget.chapter,
                 dropdownColor: Colors.indigo,
                 style: TextStyle(color: Colors.white, fontSize: 18),
                 icon: Icon(Icons.arrow_drop_down),
                 onChanged: (int i) {
                   setState(() {
-                    chapter = i;
-                    bookMarks[widget.book][chapter][0]
+                    widget.chapter = i;
+                    bookMarks[widget.book][widget.chapter][0]
                         ? bookMarkIcon = Icons.bookmark
                         : bookMarkIcon = Icons.bookmark_border;
                   });
@@ -78,7 +78,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ToggleButtons(
               children: <Widget>[Icon(bookMarkIcon)],
               onPressed: (int i) => _setBookmark(),
-              isSelected: bookMarks[widget.book][chapter].cast<bool>(),
+              isSelected: bookMarks[widget.book][widget.chapter].cast<bool>(),
               fillColor: isDark
                   ? ThemeData.dark().primaryColor
                   : ThemeData.light().primaryColor,
@@ -95,10 +95,10 @@ class _DetailScreenState extends State<DetailScreen> {
           ],
         ),
         body: VerseList(
-          verses: List.generate(bible[widget.book][chapter].length,
-              (i) => (bible[widget.book][chapter][i])),
+          verses: List.generate(bible[widget.book][widget.chapter].length,
+              (i) => (bible[widget.book][widget.chapter][i])),
           selected:
-              List.generate(bible[widget.book][chapter].length, (i) => (false)),
+              List.generate(bible[widget.book][widget.chapter].length, (i) => (false)),
         ));
   }
 }

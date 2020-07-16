@@ -45,11 +45,9 @@ void _initBookMarks(){
 
 void setBookmark(List bookmark){
   if(bookmark != null) {
-    print(bookmark);
     bookMarks = bookmark;
   }
   else{
-    print("init");
     _initBookMarks();
   }
 }
