@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+List lightTextUnselected = [Colors.black, Colors.teal, Colors.orange];
+List darkTextUnselected = [Colors.white, Colors.orange, Colors.deepOrange];
+
+List lightTextSelected = [Colors.white, Colors.greenAccent, Colors.orange];
+List darkTextSelected = [Colors.black, Colors.amber, Colors.pink];
+
 class AppTheme {
   AppTheme._();
 

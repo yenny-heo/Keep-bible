@@ -22,37 +22,35 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int bibleNum = Provider.of<AppStateNotifier>(context, listen: false)
+    List selectedBible = Provider.of<AppStateNotifier>(context, listen: false)
         .getSelectedBible();
-    List bible = korhkjv;
+
+    List bible = [];
+    if (selectedBible[0] == true) {
+      bible.add(korhkjv);
+    }
+    if (selectedBible[1] == true) {
+      bible.add(engkjv);
+    }
     bool isDark =
-        Provider.of<AppStateNotifier>(context, listen: false).getMode();
+    Provider.of<AppStateNotifier>(context, listen: false).getMode();
     bookMarks[widget.book][widget.chapter][0]
         ? bookMarkIcon = Icons.bookmark
         : bookMarkIcon = Icons.bookmark_border;
-    switch (bibleNum) {
-      case 0:
-        bible = korhkjv;
-        break;
-      case 1:
-        bible = engkjv;
-        break;
-    }
     Future<File> _setBookmark() {
       setState(() {
         bookMarks[widget.book][widget.chapter][0] =
-            !bookMarks[widget.book][widget.chapter][0];
+        !bookMarks[widget.book][widget.chapter][0];
         bookMarks[widget.book][widget.chapter][0]
             ? bookMarkIcon = Icons.bookmark
             : bookMarkIcon = Icons.bookmark_border;
       });
 
-      print(bookMarks[widget.book][widget.chapter]);
       return writeBookmark(bookMarks);
     }
 
-    final fixedList =
-        Iterable<int>.generate(bible[widget.book].length).toList();
+    final fixedList = Iterable<int>.generate(bible[0][widget.book].length)
+        .toList();
 
     return Scaffold(
         appBar: AppBar(
@@ -86,7 +84,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? AppTheme.darkMode.primaryColor
                   : AppTheme.lightMode.primaryColor,
               borderColor: isDark
-                  ? ThemeData.dark().primaryColor
+                  ? ThemeData.dark() .primaryColor
                   : ThemeData.light().primaryColor,
               selectedBorderColor: isDark
                   ? ThemeData.dark().primaryColor
@@ -95,19 +93,21 @@ class _DetailScreenState extends State<DetailScreen> {
           ],
         ),
         body: VerseList(
-          verses: List.generate(bible[widget.book][widget.chapter].length,
-              (i) => (bible[widget.book][widget.chapter][i])),
-          selected:
-              List.generate(bible[widget.book][widget.chapter].length, (i) => (false)),
-        ));
+            bible: bible,
+            book: widget.book,
+            chapter: widget.chapter,
+            selected: List.generate(bible[0][widget.book][widget.chapter].length, (index) => false)));
   }
 }
 
 class VerseList extends StatefulWidget {
-  final List<String> verses;
-  final List<bool> selected;
+  final List bible;
+  final int book;
+  final int chapter;
+  final List selected;
 
-  const VerseList({Key key, this.verses, this.selected}) : super(key: key);
+  const VerseList({Key key, this.bible, this.book, this.chapter, this.selected})
+      : super(key: key);
 
   @override
   _VerseListState createState() => _VerseListState();
@@ -116,45 +116,63 @@ class VerseList extends StatefulWidget {
 class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
+    bool isDark =
+        Provider.of<AppStateNotifier>(context, listen: false).getMode();
+    ThemeData mode;
+    List selectedColors;
+    List unSelectedColors;
+    if(isDark){
+      mode = AppTheme.darkMode;
+      selectedColors = darkTextSelected;
+      unSelectedColors = darkTextUnselected;
+    }
+    else{
+      mode = AppTheme.lightMode;
+      selectedColors = lightTextSelected;
+      unSelectedColors = lightTextUnselected;
+    }
     return Scaffold(
-      body: ListView.builder(
-          itemCount: widget.verses.length,
-          itemBuilder: (context, i) {
-            String verse = widget.verses[i];
-            int n = i + 1;
-            bool isDark =
-                Provider.of<AppStateNotifier>(context, listen: false).getMode();
-            ThemeData mode = AppTheme.lightMode;
-            isDark ? mode = AppTheme.darkMode : mode = AppTheme.lightMode;
-            return Container(
-                decoration: BoxDecoration(
-                    color: widget.selected[i]
-                        ? mode.scaffoldBackgroundColor
-                        : mode.accentColor,
-                    border: Border(
-                        bottom: BorderSide(color: Colors.grey, width: 1))),
-                child: ListTile(
-                  leading: Text('$n',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: widget.selected[i]
-                              ? mode.accentColor
-                              : mode.primaryColor)),
-                  title: Text(
-                    verse,
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: widget.selected[i]
-                            ? mode.accentColor
-                            : mode.primaryColor),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      widget.selected[i] = !widget.selected[i];
-                    });
-                  },
-                ));
-          }),
-    );
+        body: ListView.builder(
+            itemCount: widget.bible[0][widget.book][widget.chapter].length,
+            itemBuilder: (context, i) {
+              int n = i + 1;
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: widget.bible.length,
+                  itemBuilder: (context2, j) {
+                    return Container(
+                        decoration: BoxDecoration(
+                            color: widget.selected[i]
+                                ? mode.scaffoldBackgroundColor
+                                : mode.accentColor,
+                            border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.grey, width: 1))),
+                        child: ListTile(
+                          leading: Text(
+                            '$n',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: widget.selected[i]
+                                    ? selectedColors[j]
+                                    : unSelectedColors[j]),
+                          ),
+                          title: Text(
+                            widget.bible[j][widget.book][widget.chapter][i],
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: widget.selected[i]
+                                    ? selectedColors[j]
+                                    : unSelectedColors[j]),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              widget.selected[i] = !widget.selected[i];
+                            });
+                          },
+                        ));
+                  });
+            }));
   }
 }

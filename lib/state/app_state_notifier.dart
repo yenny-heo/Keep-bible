@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppStateNotifier extends ChangeNotifier {
   bool isDarkMode = false;
-  int selectedBible = 0;
+  List selectedBible = [true, false];
 
   bool getMode() => isDarkMode;
 
@@ -11,10 +11,11 @@ class AppStateNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getSelectedBible() => selectedBible;
+  List getSelectedBible() => selectedBible;
 
   void setSelectedBible(int bible) {
-    this.selectedBible = bible;
+    selectedBible[bible] = !selectedBible[bible];
+    print(selectedBible[bible]);
     notifyListeners();
   }
 }
