@@ -3,10 +3,15 @@ import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
+import 'data/bookmarks.dart';
 import 'page/new_bible.dart';
 import 'page/old_bible.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  readBookmark().then((List b){
+    setBookmark(b);
+  });
   runApp(ChangeNotifierProvider<AppStateNotifier>(
       create: (context) => AppStateNotifier(), child: MyApp()));
 }

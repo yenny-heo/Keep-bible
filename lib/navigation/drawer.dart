@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/page/bookmark_list.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
+
+
+final isLightOrDark = [true, false];
 
 class Bible{
   final String name;
@@ -11,17 +15,17 @@ class Bible{
 Bible b1 = Bible('KJV 흠정역 한글', 0);
 Bible b2 = Bible('KJV 흠정역 영어', 1);
 
+Bible selectedBible = b1;
+
 class NavDrawer extends StatefulWidget {
   _NavDrawerState createState() => _NavDrawerState();
 }
 
 class _NavDrawerState extends State<NavDrawer> {
-  Bible selectedBible = b1;
   List<Bible> bibles = <Bible>[b1, b2];
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getMode();
-    final isLightOrDark = [!isDark, isDark];
     return Drawer(
         child: ListView(
       padding: const EdgeInsets.all(0.0),
@@ -41,7 +45,7 @@ class _NavDrawerState extends State<NavDrawer> {
           children: <Widget>[
             MenuText('모드'),
             Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: ToggleButtons(
                   children: <Widget>[
                     Icon(Icons.wb_sunny),
@@ -79,6 +83,22 @@ class _NavDrawerState extends State<NavDrawer> {
 
             )
           ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            MenuText('책갈피 목록'),
+            IconButton(
+              icon: Icon(Icons.bookmark),
+              iconSize: 30,
+              onPressed: () =>{
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BookmarkList()))
+              },
+            )
+          ],
         )
       ],
     ));
@@ -87,7 +107,7 @@ class _NavDrawerState extends State<NavDrawer> {
 
 Container MenuText(String text) {
   return Container(
-    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
     child: Text(text, style: TextStyle(fontSize: 20)),
   );
 }

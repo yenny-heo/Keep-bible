@@ -8,6 +8,7 @@ class AppTheme {
     accentColor: Colors.white,
     primaryColor: Colors.black,
 
+
   );
 
   static final ThemeData darkMode = ThemeData(
