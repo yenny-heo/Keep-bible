@@ -18,7 +18,7 @@ class AppTheme {
   );
 
   static final ThemeData darkMode = ThemeData(
-    scaffoldBackgroundColor: Colors.white54,
+    scaffoldBackgroundColor: Color(0xff8f8f8f),
     accentColor: Colors.black,
     primaryColor: Colors.white,
 

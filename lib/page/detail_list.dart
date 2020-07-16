@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keep_bible_app/data/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
@@ -32,19 +33,29 @@ class _DetailScreenState extends State<DetailScreen> {
     if (selectedBible[1] == true) {
       bible.add(engkjv);
     }
-    bool isDark =
-    Provider.of<AppStateNotifier>(context, listen: false).getMode();
-    bookMarks[widget.book][widget.chapter][0]
-        ? bookMarkIcon = Icons.bookmark
-        : bookMarkIcon = Icons.bookmark_border;
+    bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getMode();
+    bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
+
     Future<File> _setBookmark() {
+      bool flag = bookMarks[widget.book][widget.chapter][0];
       setState(() {
-        bookMarks[widget.book][widget.chapter][0] =
-        !bookMarks[widget.book][widget.chapter][0];
-        bookMarks[widget.book][widget.chapter][0]
-            ? bookMarkIcon = Icons.bookmark
-            : bookMarkIcon = Icons.bookmark_border;
+        bookMarks[widget.book][widget.chapter][0] = !flag;
+        flag ? bookMarkIcon = Icons.bookmark: bookMarkIcon = Icons.bookmark_border;
       });
+      if(!flag)
+        Fluttertoast.showToast(
+            msg: "책갈피를 추가했습니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
+      else
+        Fluttertoast.showToast(
+            msg: "책갈피가 삭제되었습니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
 
       return writeBookmark(bookMarks);
     }

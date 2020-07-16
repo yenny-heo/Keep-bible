@@ -18,7 +18,7 @@ class _BibleSelectionState extends State<BibleSelection>{
       body: Column(
         children: <Widget>[
           ListTile(
-            title: Text('KJV 흠정역 한글'),
+            title: _title('KJV 흠정역 한글'),
             leading: Checkbox(
               value: _value0,
               onChanged: (val){
@@ -37,7 +37,7 @@ class _BibleSelectionState extends State<BibleSelection>{
             )
           ),
           ListTile(
-              title: Text('KJV 흠정역 영어'),
+              title: _title('KJV 흠정역 영어'),
               leading: Checkbox(
                 value: _value1,
                 onChanged: (val){
@@ -64,9 +64,16 @@ class _BibleSelectionState extends State<BibleSelection>{
 
 Future<bool> leastOneBible() {
   return Fluttertoast.showToast(
-      msg: "최소 하나 이상의 역본을 선택해주세요.",
+      msg: "최소 하나 이상의 역본을 선택해야 합니다.",
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
       fontSize: 16.0);
+}
+
+Text _title(String title) {
+  return Text(
+    title,
+    style: TextStyle(fontSize: 20),
+  );
 }
