@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-//0: light, 1: dark
-var isLightOrDark = [true, false];
+var selectedBible = [true, false];
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -12,29 +11,28 @@ Future<String> get _localPath async {
 
 Future<File> get _localFile async {
   final path = await _localPath;
-  return File('$path/mode.txt');
+  return File('$path/selectedBible.txt');
 }
 
-Future<File> writeMode(bool isDark) async {
+Future<File> writeSelectedBible(int num) async {
   final file = await _localFile;
+  selectedBible[num] = !selectedBible[num];
   // Write the file.
-  return file.writeAsString('$isDark');
+  return file.writeAsString('$selectedBible');
 }
 
-Future<bool> readMode() async {
+Future<List> readSelectedBible() async {
   try {
     final file = await _localFile;
     // Read the file.
     String contents = await file.readAsString();
-    return contents == "true";
+    return json.decode(contents);
   } catch (e) {
-    print(e);
     // If encountering an error, return 0.
-    return false;
+    return [true, false];
   }
 }
 
-void setMode(bool isDark){
-  isLightOrDark[0] = !isDark;
-  isLightOrDark[1] = isDark;
+void setSelectedBible(List s){
+  selectedBible = s.cast<bool>();
 }

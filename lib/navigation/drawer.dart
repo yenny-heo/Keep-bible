@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/day_night_mode.dart';
-import 'package:keep_bible_app/page/bible_select.dart';
+import 'package:keep_bible_app/page/bible_selection_list.dart';
 import 'package:keep_bible_app/page/bookmark_list.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';

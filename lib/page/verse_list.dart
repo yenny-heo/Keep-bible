@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
+import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -23,8 +24,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List selectedBible = Provider.of<AppStateNotifier>(context, listen: false)
-        .getSelectedBible();
 
     List bible = [];
     if (selectedBible[0] == true) {

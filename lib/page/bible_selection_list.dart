@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-bool _value0 = true;
-bool _value1 = false;
 
 class BibleSelection extends StatefulWidget{
   _BibleSelectionState createState() => _BibleSelectionState();
@@ -20,17 +19,17 @@ class _BibleSelectionState extends State<BibleSelection>{
           ListTile(
             title: _title('KJV 흠정역 한글'),
             leading: Checkbox(
-              value: _value0,
+              value: selectedBible[0],
               onChanged: (val){
                 setState((){
-                  List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
-                  if(sb[0] == true && sb[1] == false)
+                  //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
+                  if(selectedBible[0] == true && selectedBible[1] == false)
                     {
                       leastOneBible();
                     }
                   else{
-                    Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(0);
-                    _value0 = sb[0];
+                   // Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(0);
+                    writeSelectedBible(0);
                   }
                 });
               },
@@ -39,17 +38,17 @@ class _BibleSelectionState extends State<BibleSelection>{
           ListTile(
               title: _title('KJV 흠정역 영어'),
               leading: Checkbox(
-                value: _value1,
+                value: selectedBible[1],
                 onChanged: (val){
                   setState((){
-                    List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
-                    if(sb[0] == false && sb[1] == true)
+                    //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
+                    if(selectedBible[0] == false && selectedBible[1] == true)
                       {
                         leastOneBible();
                       }
                     else{
-                      Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(1);
-                      _value1 = sb[1];
+                     // Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(1);
+                      writeSelectedBible(1);
                     }
                   });
                 },

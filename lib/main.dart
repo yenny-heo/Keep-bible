@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
@@ -10,11 +11,14 @@ import 'page/old_bible.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  readBookmark().then((List b){
-    setBookmark(b);
-  });
   readMode().then((bool m){
     setMode(m);
+  });
+  readSelectedBible().then((List s){
+    setSelectedBible(s);
+  });
+  readBookmark().then((List b){
+    setBookmark(b);
   });
   runApp(ChangeNotifierProvider<AppStateNotifier>(
       create: (context) => AppStateNotifier(), child: MyApp()));
