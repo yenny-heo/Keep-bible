@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:keep_bible_app/data/bookmarks.dart';
+import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
@@ -69,7 +69,7 @@ class _DetailScreenState extends State<DetailScreen> {
           actions: <Widget>[
             DropdownButton<int>(
                 value: widget.chapter,
-                dropdownColor: Colors.indigo,
+                dropdownColor: isDark? AppTheme.darkMode.scaffoldBackgroundColor: AppTheme.lightMode.scaffoldBackgroundColor,
                 style: TextStyle(color: Colors.white, fontSize: 18),
                 icon: Icon(Icons.arrow_drop_down),
                 onChanged: (int i) {

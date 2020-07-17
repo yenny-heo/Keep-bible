@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/local_storage/day_night_mode.dart';
 import 'package:keep_bible_app/page/bible_select.dart';
 import 'package:keep_bible_app/page/bookmark_list.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
 
-final isLightOrDark = [true, false];
 
 
 class NavDrawer extends StatefulWidget {
@@ -48,6 +48,7 @@ class _NavDrawerState extends State<NavDrawer> {
                       isLightOrDark[1] = !isLightOrDark[1];
                       Provider.of<AppStateNotifier>(context, listen: false)
                           .setMode(isLightOrDark[1]);
+                      writeMode(isLightOrDark[1]);
                     });
                   },
                   isSelected: isLightOrDark,
