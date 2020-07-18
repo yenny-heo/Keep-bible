@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/title.dart';
-import 'verse_list_page.dart';
+import 'verse_page.dart';
 
 class OldBible extends StatelessWidget {
   @override
