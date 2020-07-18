@@ -4,19 +4,20 @@ class AppStateNotifier extends ChangeNotifier {
   bool isDarkMode = false;
   List selectedBible = [true, false];
 
-  bool getMode() => isDarkMode;
+  bool getModeState() => isDarkMode;
 
-  void setMode(bool isDarkMode) {
+  void setModeState(bool isDarkMode) {
     this.isDarkMode = isDarkMode;
     notifyListeners();
   }
-  void initMode(bool isDarkMode) {
+  void initModeState(bool isDarkMode) {
     this.isDarkMode = isDarkMode;
+    print(isDarkMode);
   }
 
-  List getSelectedBible() => selectedBible;
+  List getSelectedBibleState() => selectedBible;
 
-  void setSelectedBible(int bible) {
+  void setSelectedBibleState(int bible) {
     selectedBible[bible] = !selectedBible[bible];
     notifyListeners();
   }

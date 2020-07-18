@@ -1,3 +1,4 @@
+//버그로 인해 사용 X
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -28,7 +29,6 @@ Future<bool> readMode() async {
     String contents = await file.readAsString();
     return contents == "true";
   } catch (e) {
-    print(e);
     // If encountering an error, return 0.
     return false;
   }

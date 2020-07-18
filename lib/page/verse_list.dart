@@ -32,7 +32,7 @@ class _DetailScreenState extends State<DetailScreen> {
     if (selectedBible[1] == true) {
       bible.add(engkjv);
     }
-    bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getMode();
+    bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
 
     Future<File> _setBookmark() {
@@ -127,7 +127,7 @@ class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
     bool isDark =
-        Provider.of<AppStateNotifier>(context, listen: false).getMode();
+        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;

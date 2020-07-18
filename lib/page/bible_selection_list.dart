@@ -20,6 +20,7 @@ class _BibleSelectionState extends State<BibleSelection>{
             title: _title('KJV 흠정역 한글'),
             leading: Checkbox(
               value: selectedBible[0],
+              activeColor: Colors.blue,
               onChanged: (val){
                 setState((){
                   //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
@@ -39,6 +40,7 @@ class _BibleSelectionState extends State<BibleSelection>{
               title: _title('KJV 흠정역 영어'),
               leading: Checkbox(
                 value: selectedBible[1],
+                activeColor: Colors.blue,
                 onChanged: (val){
                   setState((){
                     //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
