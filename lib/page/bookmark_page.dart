@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/title.dart';
 
-import 'verse_list.dart';
+import 'verse_list_page.dart';
 
 List<BookmarkInfo> bookmarkList = List<BookmarkInfo>();
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/day_night_mode.dart';
-import 'package:keep_bible_app/page/bible_selection_list.dart';
-import 'package:keep_bible_app/page/bookmark_list.dart';
-import 'package:keep_bible_app/page/search.dart';
+import 'package:keep_bible_app/page/bible_selection_page.dart';
+import 'package:keep_bible_app/page/bookmark_page.dart';
+import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +74,7 @@ class _NavDrawerState extends State<NavDrawer> {
           child: MenuText('검색'),
           onTap: () => {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Search()))
+                MaterialPageRoute(builder: (context) => SearchPage()))
           },
         )
       ],

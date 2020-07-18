@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/title.dart';
-import 'verse_list.dart';
+import 'verse_list_page.dart';
 
-class OldBible extends StatelessWidget {
+class NewBible extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OldBibleList(bibles: List.generate(korOldB.length, (i) => (korOldB[i])));
+    return NewBibleList(bibles: List.generate(korNewB.length, (i) => (korNewB[i])));
   }
 }
 
-class OldBibleList extends StatelessWidget {
+class NewBibleList extends StatelessWidget {
   final List<String> bibles;
 
-  const OldBibleList({Key key, this.bibles}) : super(key: key);
+  const NewBibleList({Key key, this.bibles}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class OldBibleList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreen(name: korOldB[i], book: i, chapter: 0)));
+                                DetailScreen(name: korNewB[i], book: i + 39, chapter: 0)));
                   },
                 ));
           }),
