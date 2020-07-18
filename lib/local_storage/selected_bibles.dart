@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-var selectedBible = [true, false];
+var selectedBible = [true, false, false];
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -34,5 +34,8 @@ Future<List> readSelectedBible() async {
 }
 
 void setSelectedBible(List s){
-  selectedBible = s.cast<bool>();
+  s = s.cast<bool>();
+  for(int i=0; i<s.length; i++){
+    selectedBible[i] = s[i];
+  }
 }

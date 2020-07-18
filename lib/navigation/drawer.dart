@@ -49,7 +49,7 @@ class _NavDrawerState extends State<NavDrawer> {
                       isLightOrDark[1] = !isLightOrDark[1];
                       Provider.of<AppStateNotifier>(context, listen: false)
                           .setModeState(isLightOrDark[1]);
-//                      writeMode(isLightOrDark[1]);
+                      writeMode(isLightOrDark[1]);
                     });
                   },
                   isSelected: isLightOrDark,

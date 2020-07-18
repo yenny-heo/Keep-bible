@@ -11,9 +11,6 @@ import 'page/old_bible_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-//  readMode().then((bool m){
-//    setMode(m);
-//  });
   readSelectedBible().then((List s){
     setSelectedBible(s);
   });
@@ -26,10 +23,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    readMode().then((bool m){
+      setMode(m);
+      Provider.of<AppStateNotifier>(context, listen: false).setModeState(isLightOrDark[1]);
+    });
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
-//      appState.initModeState(isLightOrDark[1]);
       return MaterialApp(
           title: 'Keep Bible',
           theme: appState.isDarkMode ? ThemeData.dark() : ThemeData.light(),

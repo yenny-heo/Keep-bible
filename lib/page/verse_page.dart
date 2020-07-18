@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:keep_bible_app/data/korhrv.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
@@ -31,6 +32,9 @@ class _DetailScreenState extends State<DetailScreen> {
     }
     if (selectedBible[1] == true) {
       bible.add(engkjv);
+    }
+    if (selectedBible[2] == true) {
+      bible.add(korhrv);
     }
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;

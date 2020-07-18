@@ -35,6 +35,7 @@ Future<bool> readMode() async {
 }
 
 void setMode(bool isDark){
+  print("dark"+isDark.toString());
   isLightOrDark[0] = !isDark;
   isLightOrDark[1] = isDark;
 }
