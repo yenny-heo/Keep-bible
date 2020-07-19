@@ -1,32 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/page/verse_page.dart';
 import 'package:keep_bible_app/toast/toast.dart';
 
+class SearchInfo {
+  String content;
+  String bookName;
+  int book;
+  int chapter;
+  SearchInfo(content, bookName, book, chapter) {
+    this.content = content;
+    this.bookName = bookName;
+    this.book = book;
+    this.chapter = chapter;
+  }
+}
 class SearchPage extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<SearchPage> {
-  var items = List<String>();
+  var items = List<SearchInfo>();
   String query = "";
 
   void filterSearchResults(String query) {
     var SearchList = korhkjv;
-    String title;
     if (query.isNotEmpty) {
-      List<String> listData = List<String>();
+      List<SearchInfo> listData = List<SearchInfo>();
       for (int i = 0; i < SearchList.length; i++) {
         for (int j = 0; j < SearchList[i].length; j++) {
           for (int k = 0; k < SearchList[i][j].length; k++) {
+            String content, bookName;
+            int book = i, chapter = j;
             if (SearchList[i][j][k].contains(query)) {
               if (i <= 38)
-                title = korOldB[i];
+                bookName = korOldB[i];
               else
-                title = korNewB[i-39];
-              String tmp = title + (j+1).toString() + ":" + (k+1).toString() + " "+SearchList[i][j][k];
-              listData.add(tmp);
+                bookName = korNewB[i-39];
+              content = bookName + (j+1).toString() + ":" + (k+1).toString() + " "+SearchList[i][j][k];
+              SearchInfo s = SearchInfo(content, bookName, book, chapter);
+              listData.add(s);
             }
           }
         }
@@ -90,13 +105,22 @@ class _SearchState extends State<SearchPage> {
                               BorderSide(color: Colors.grey, width: 1))
                       ),
                       child:
-                        ListTile(
-                            title: Text(
-                                '${items[idx]}',
-                            style: TextStyle(
+                      ListTile(
+                        title: Text(
+                          '${items[idx].content}',
+                          style: TextStyle(
                               fontSize: 20
-                            ),)
-                        )
+                          ),),
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailScreen(
+                                          name: items[idx].bookName,
+                                          book: items[idx].book,
+                                          chapter: items[idx].chapter)));
+                        },
+                      )
                     );
                   },
                 )

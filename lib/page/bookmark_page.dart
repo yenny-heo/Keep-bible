@@ -11,7 +11,6 @@ class BookmarkInfo {
   String bookName;
   int book;
   int chapter;
-
   BookmarkInfo(fullName, bookName, book, chapter) {
     this.fullName = fullName;
     this.bookName = bookName;
