@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keep_bible_app/data/korhrv.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
@@ -7,6 +6,7 @@ import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
+import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
@@ -36,6 +36,9 @@ class _DetailScreenState extends State<DetailScreen> {
     if (selectedBible[2] == true) {
       bible.add(korhrv);
     }
+
+    final fixedList = Iterable<int>.generate(bible[0][widget.book].length).toList();
+
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
 
@@ -46,47 +49,66 @@ class _DetailScreenState extends State<DetailScreen> {
         flag ? bookMarkIcon = Icons.bookmark: bookMarkIcon = Icons.bookmark_border;
       });
       if(!flag)
-        Fluttertoast.showToast(
-            msg: "책갈피를 추가했습니다.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
+        toast("책갈피를 추가했습니다.");
       else
-        Fluttertoast.showToast(
-            msg: "책갈피가 삭제되었습니다.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
+        toast("책갈피가 삭제되었습니다.");
 
       return writeBookmark(bookMarks);
     }
 
-    final fixedList = Iterable<int>.generate(bible[0][widget.book].length)
-        .toList();
+    void _showDialog() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(
+                width: 1000,
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: fixedList.map((val) {
+                    return MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.chapter = val;
+                            bookMarks[widget.book][widget.chapter][0]
+                                ? bookMarkIcon = Icons.bookmark
+                                : bookMarkIcon = Icons.bookmark_border;
+                            Navigator.pop(context);
+                          });
+                        },
+                        color: isDark? AppTheme.darkMode.scaffoldBackgroundColor: AppTheme.lightMode.scaffoldBackgroundColor,
+                        minWidth: 0,
+                        height: 0,
+                        padding: EdgeInsets.zero,
+                        child: Text('${val + 1}', style: TextStyle(fontSize: 20),)
+                    );
+                  }).toList(),
+                ),
+              )
+            );
+          });
+    }
 
     return Scaffold(
         appBar: AppBar(
           title: Center(child: Text(widget.name)),
           actions: <Widget>[
-            DropdownButton<int>(
-                value: widget.chapter,
-                dropdownColor: isDark? AppTheme.darkMode.scaffoldBackgroundColor: AppTheme.lightMode.scaffoldBackgroundColor,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                icon: Icon(Icons.arrow_drop_down),
-                onChanged: (int i) {
-                  setState(() {
-                    widget.chapter = i;
-                    bookMarks[widget.book][widget.chapter][0]
-                        ? bookMarkIcon = Icons.bookmark
-                        : bookMarkIcon = Icons.bookmark_border;
-                  });
-                },
-                items: fixedList.map((i) {
-                  int a = i + 1;
-                  return DropdownMenuItem<int>(value: i, child: Text('$a 장'));
-                }).toList()),
+            MaterialButton(
+              minWidth: 50,
+              height: 10,
+              padding: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              child:Row(
+                children: <Widget>[
+                  Text('${widget.chapter+1} 장', style: TextStyle(fontSize: 18),),
+                  Icon(Icons.keyboard_arrow_down),
+                ],
+              ),
+                onPressed: () => _showDialog(),
+              ),
             ToggleButtons(
               children: <Widget>[Icon(bookMarkIcon)],
               onPressed: (int i) => _setBookmark(),
@@ -130,8 +152,7 @@ class VerseList extends StatefulWidget {
 class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
-    bool isDark =
-        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;
@@ -150,7 +171,15 @@ class _VerseListState extends State<VerseList> {
             itemCount: widget.bible[0][widget.book][widget.chapter].length,
             itemBuilder: (context, i) {
               int n = i + 1;
-              return ListView.builder(
+              return Container(
+                decoration: BoxDecoration(
+                    color: widget.selected[i]
+                        ? mode.scaffoldBackgroundColor
+                        : mode.accentColor,
+                    border: Border(
+                        bottom:
+                        BorderSide(color: Colors.grey, width: 2))),
+                child: ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   itemCount: widget.bible.length,
@@ -186,7 +215,7 @@ class _VerseListState extends State<VerseList> {
                             });
                           },
                         ));
-                  });
+                  }));
             }));
   }
 }

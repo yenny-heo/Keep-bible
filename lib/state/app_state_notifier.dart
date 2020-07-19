@@ -8,7 +8,6 @@ class AppStateNotifier extends ChangeNotifier {
 
   void setModeState(bool isDarkMode) {
     this.isDarkMode = isDarkMode;
-    print(isDarkMode);
     notifyListeners();
   }
   void initModeState(bool isDarkMode) {

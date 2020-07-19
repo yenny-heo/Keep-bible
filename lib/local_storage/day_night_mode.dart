@@ -1,4 +1,3 @@
-//버그로 인해 사용 X
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -35,7 +34,6 @@ Future<bool> readMode() async {
 }
 
 void setMode(bool isDark){
-  print("dark"+isDark.toString());
   isLightOrDark[0] = !isDark;
   isLightOrDark[1] = isDark;
 }

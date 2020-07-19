@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/toast/toast.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -34,6 +35,9 @@ class _SearchState extends State<SearchPage> {
         items.clear();
         items.addAll(listData);
       });
+      if(listData.isEmpty){
+        toast("일치하는 검색어가 없습니다");
+      }
     }
     else{
       setState(() {
