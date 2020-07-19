@@ -4,6 +4,7 @@ import 'package:keep_bible_app/page/bible_selection_page.dart';
 import 'package:keep_bible_app/page/bookmark_page.dart';
 import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 
@@ -23,10 +24,10 @@ class _NavDrawerState extends State<NavDrawer> {
       padding: const EdgeInsets.all(0.0),
       children: <Widget>[
         Container(
-            height: 85,
+            height: 100,
             child: DrawerHeader(
               decoration:
-                  BoxDecoration(color: isDark ? Colors.black38 : Colors.blue),
+                  BoxDecoration(color: isDark ? AppTheme.darkMode.primaryColor : AppTheme.lightMode.primaryColor),
               child: Text(
                 'Menu',
                 style: TextStyle(fontSize: 20, color: Colors.white),
@@ -35,7 +36,7 @@ class _NavDrawerState extends State<NavDrawer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            MenuText('모드'),
+            MenuText('모드', isDark),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: ToggleButtons(
@@ -53,25 +54,31 @@ class _NavDrawerState extends State<NavDrawer> {
                     });
                   },
                   isSelected: isLightOrDark,
+                  color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor,
+                  selectedBorderColor: Colors.black26,
+                  disabledBorderColor: Colors.black26,
+                  borderColor: Colors.black26,
+                  selectedColor: AppTheme.lightMode.primaryColor,
+
                 ))
           ],
         ),
         InkWell(
-          child: MenuText('역본 선택'),
+          child: MenuText('역본 선택', isDark),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BibleSelection()))
           }
         ),
         InkWell(
-          child: MenuText('책갈피 목록'),
+          child: MenuText('책갈피 목록', isDark),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BookmarkList()))
           },
         ),
         InkWell(
-          child: MenuText('검색'),
+          child: MenuText('검색', isDark),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => SearchPage()))
@@ -82,9 +89,12 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 }
 
-Container MenuText(String text) {
+Container MenuText(String text, bool isDark) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-    child: Text(text, style: TextStyle(fontSize: 20)),
+    child: Text(text, style: TextStyle(
+        fontSize: 20,
+      color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
+    )),
   );
 }

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/page/verse_page.dart';
+import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:keep_bible_app/toast/toast.dart';
+import 'package:provider/provider.dart';
 
 class SearchInfo {
   String content;
@@ -63,6 +66,8 @@ class _SearchState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark =
+    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
         appBar: AppBar(title: Text('검색')),
         body: Container(
@@ -74,20 +79,39 @@ class _SearchState extends State<SearchPage> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: TextField(
-                        onChanged: (val){
-                          query = val;
-                        },
-                        decoration: InputDecoration(
-                            labelText: "검색",
-                            hintText: "키워드로 검색하세요",
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)))),
-                      )
-                    ),
+                        child: TextField(
+                          style: TextStyle(
+                              color: isDark? AppTheme.darkMode.accentColor: AppTheme.lightMode.accentColor
+                          ),
+                      onChanged: (val) {
+                        query = val;
+                      },
+                      decoration: InputDecoration(
+                        labelText: "검색",
+                        hintText: "키워드로 검색하세요",
+                        labelStyle: TextStyle(
+                          color: Colors.grey
+                        ),
+                        hintStyle: TextStyle(
+                            color: Colors.grey
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(
+                                color: AppTheme.lightMode.primaryColor,
+                            width: 2)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2)),
+                      ),
+                    )),
                     IconButton(
                       icon: Icon(Icons.search),
+                      color: Colors.grey,
                       onPressed: () => filterSearchResults(query),
                     )
                   ],
@@ -109,7 +133,8 @@ class _SearchState extends State<SearchPage> {
                         title: Text(
                           '${items[idx].content}',
                           style: TextStyle(
-                              fontSize: 20
+                              fontSize: 20,
+                            color: isDark? AppTheme.darkMode.accentColor: AppTheme.lightMode.accentColor
                           ),),
                         onTap: () {
                           Navigator.push(context,

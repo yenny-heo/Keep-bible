@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 import 'verse_page.dart';
 
@@ -22,6 +25,8 @@ class BookmarkInfo {
 class BookmarkList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isDark =
+    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookmarkList = [];
     for (int i = 0; i < bookMarks.length; i++) {
       for (int j = 0; j < bookMarks[i].length; j++) {
@@ -53,7 +58,10 @@ class BookmarkList extends StatelessWidget {
                   child: ListTile(
                     title: Center(
                         child: Text(bookmarkList[i].fullName,
-                            style: TextStyle(fontSize: 25))),
+                            style: TextStyle(
+                                fontSize: 25,
+                              color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
+                            ))),
                     onTap: () {
                       Navigator.push(
                           context,

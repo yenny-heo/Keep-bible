@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
+import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:keep_bible_app/toast/toast.dart';
+import 'package:provider/provider.dart';
 
 
 class BibleSelection extends StatefulWidget{
@@ -10,15 +13,17 @@ class BibleSelection extends StatefulWidget{
 class _BibleSelectionState extends State<BibleSelection>{
   @override
   Widget build(BuildContext context) {
+    bool isDark =
+    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
       appBar: AppBar(title: Text('역본 선택')),
       body: Column(
         children: <Widget>[
           ListTile(
-            title: _title('KJV 흠정역 한글'),
+            title: _title('KJV 흠정역 한글', isDark),
             leading: Checkbox(
               value: selectedBible[0],
-              activeColor: Colors.blue,
+              activeColor: AppTheme.lightMode.primaryColor,
               onChanged: (val){
                 setState((){
                   //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
@@ -35,10 +40,10 @@ class _BibleSelectionState extends State<BibleSelection>{
             )
           ),
           ListTile(
-              title: _title('KJV 흠정역 영어'),
+              title: _title('KJV 흠정역 영어', isDark),
               leading: Checkbox(
                 value: selectedBible[1],
-                activeColor: Colors.blue,
+                activeColor: AppTheme.lightMode.primaryColor,
                 onChanged: (val){
                   setState((){
                     //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
@@ -55,10 +60,10 @@ class _BibleSelectionState extends State<BibleSelection>{
               )
           ),
           ListTile(
-              title: _title('개역 성경'),
+              title: _title('개역 성경', isDark),
               leading: Checkbox(
                 value: selectedBible[2],
-                activeColor: Colors.blue,
+                activeColor: AppTheme.lightMode.primaryColor,
                 onChanged: (val){
                   setState((){
                     //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
@@ -82,9 +87,9 @@ class _BibleSelectionState extends State<BibleSelection>{
 }
 
 
-Text _title(String title) {
+Text _title(String title, bool isDark) {
   return Text(
     title,
-    style: TextStyle(fontSize: 20),
+    style: TextStyle(fontSize: 20, color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor),
   );
 }

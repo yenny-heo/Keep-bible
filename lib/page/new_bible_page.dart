@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 import 'verse_page.dart';
 
 class NewBible extends StatelessWidget {
@@ -16,6 +19,8 @@ class NewBibleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark =
+    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
       body: ListView.builder(
           itemCount: bibles.length,
@@ -26,7 +31,12 @@ class NewBibleList extends StatelessWidget {
                         bottom: BorderSide(color: Colors.grey, width: 1))),
                 child: ListTile(
                   title: Center(
-                      child: Text(bibles[i], style: TextStyle(fontSize: 25))),
+                      child: Text(bibles[i],
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: isDark
+                                  ? AppTheme.darkMode.accentColor
+                                  : AppTheme.lightMode.accentColor))),
                   onTap: () {
                     Navigator.push(
                         context,

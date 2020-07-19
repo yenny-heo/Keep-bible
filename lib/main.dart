@@ -3,6 +3,7 @@ import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'local_storage/bookmarks.dart';
 import 'local_storage/day_night_mode.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
       return MaterialApp(
           title: 'Keep Bible',
-          theme: appState.isDarkMode ? ThemeData.dark() : ThemeData.light(),
+          debugShowCheckedModeBanner: false,
+          theme: appState.isDarkMode ? AppTheme.darkMode : AppTheme.lightMode,
           home: DefaultTabController(
             length: 2,
             child: Scaffold(

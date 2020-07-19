@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/theme/app_theme.dart';
 
 class Bottom extends StatelessWidget {
   @override
@@ -7,8 +8,8 @@ class Bottom extends StatelessWidget {
       child: Container(
         height: 50,
         child: TabBar(
-          indicatorColor: Colors.blue,
-          labelColor: Colors.blue,
+          indicatorColor: AppTheme.lightMode.primaryColor,
+          labelColor: AppTheme.lightMode.primaryColor,
           unselectedLabelColor: Colors.grey,
           tabs: <Widget>[
             Tab(

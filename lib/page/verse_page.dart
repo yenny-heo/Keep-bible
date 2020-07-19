@@ -79,11 +79,11 @@ class _DetailScreenState extends State<DetailScreen> {
                             Navigator.pop(context);
                           });
                         },
-                        color: isDark? AppTheme.darkMode.scaffoldBackgroundColor: AppTheme.lightMode.scaffoldBackgroundColor,
+                        color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                         minWidth: 0,
                         height: 0,
                         padding: EdgeInsets.zero,
-                        child: Text('${val + 1}', style: TextStyle(fontSize: 20),)
+                        child: Text('${val + 1}', style: TextStyle(fontSize: 20, color: Colors.white),)
                     );
                   }).toList(),
                 ),
@@ -103,8 +103,9 @@ class _DetailScreenState extends State<DetailScreen> {
               clipBehavior: Clip.antiAlias,
               child:Row(
                 children: <Widget>[
-                  Text('${widget.chapter+1} 장', style: TextStyle(fontSize: 18),),
-                  Icon(Icons.keyboard_arrow_down),
+                  Text('${widget.chapter+1} 장',
+                    style: TextStyle(fontSize: 18, color: Colors.white),),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white,),
                 ],
               ),
                 onPressed: () => _showDialog(),
@@ -113,18 +114,17 @@ class _DetailScreenState extends State<DetailScreen> {
               children: <Widget>[Icon(bookMarkIcon)],
               onPressed: (int i) => _setBookmark(),
               isSelected: bookMarks[widget.book][widget.chapter].cast<bool>(),
+              color: Colors.white,
               fillColor: isDark
-                  ? ThemeData.dark().primaryColor
-                  : ThemeData.light().primaryColor,
-              selectedColor: isDark
+                ? AppTheme.darkMode.primaryColor
+                : AppTheme.lightMode.primaryColor,
+              selectedColor: Colors.white,
+              borderColor: isDark
                   ? AppTheme.darkMode.primaryColor
                   : AppTheme.lightMode.primaryColor,
-              borderColor: isDark
-                  ? ThemeData.dark() .primaryColor
-                  : ThemeData.light().primaryColor,
               selectedBorderColor: isDark
-                  ? ThemeData.dark().primaryColor
-                  : ThemeData.light().primaryColor,
+                  ? AppTheme.darkMode.primaryColor
+                  : AppTheme.lightMode.primaryColor,
             )
           ],
         ),
@@ -174,8 +174,8 @@ class _VerseListState extends State<VerseList> {
               return Container(
                 decoration: BoxDecoration(
                     color: widget.selected[i]
-                        ? mode.scaffoldBackgroundColor
-                        : mode.accentColor,
+                        ? mode.focusColor
+                        : mode.scaffoldBackgroundColor,
                     border: Border(
                         bottom:
                         BorderSide(color: Colors.grey, width: 2))),
@@ -187,8 +187,8 @@ class _VerseListState extends State<VerseList> {
                     return Container(
                         decoration: BoxDecoration(
                             color: widget.selected[i]
-                                ? mode.scaffoldBackgroundColor
-                                : mode.accentColor,
+                                ? mode.focusColor
+                                : mode.scaffoldBackgroundColor,
                             border: Border(
                                 bottom:
                                     BorderSide(color: Colors.grey, width: 1))),
