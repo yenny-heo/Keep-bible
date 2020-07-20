@@ -27,14 +27,18 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
 
     List bible = [];
+    int bibleNum = 0;
     if (selectedBible[0] == true) {
       bible.add(korhkjv);
+      bibleNum++;
     }
     if (selectedBible[1] == true) {
       bible.add(engkjv);
+      bibleNum++;
     }
     if (selectedBible[2] == true) {
       bible.add(korhrv);
+      bibleNum++;
     }
 
     final fixedList = Iterable<int>.generate(bible[0][widget.book].length).toList();
@@ -132,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
             bible: bible,
             book: widget.book,
             chapter: widget.chapter,
-            selected: List.generate(bible[0][widget.book][widget.chapter].length, (index) => false)));
+            selected: List.generate(bible[0][widget.book][widget.chapter].length * bibleNum, (index) => false)));
   }
 }
 
@@ -184,9 +188,10 @@ class _VerseListState extends State<VerseList> {
                   physics: ClampingScrollPhysics(),
                   itemCount: widget.bible.length,
                   itemBuilder: (context2, j) {
+                    int k = i * widget.bible.length + j;
                     return Container(
                         decoration: BoxDecoration(
-                            color: widget.selected[i]
+                            color: widget.selected[k]
                                 ? mode.focusColor
                                 : mode.scaffoldBackgroundColor,
                             border: Border(
@@ -197,7 +202,7 @@ class _VerseListState extends State<VerseList> {
                             '$n',
                             style: TextStyle(
                                 fontSize: 18,
-                                color: widget.selected[i]
+                                color: widget.selected[k]
                                     ? selectedColors[j]
                                     : unSelectedColors[j]),
                           ),
@@ -205,13 +210,13 @@ class _VerseListState extends State<VerseList> {
                             widget.bible[j][widget.book][widget.chapter][i],
                             style: TextStyle(
                                 fontSize: 22,
-                                color: widget.selected[i]
+                                color: widget.selected[k]
                                     ? selectedColors[j]
                                     : unSelectedColors[j]),
                           ),
                           onTap: () {
                             setState(() {
-                              widget.selected[i] = !widget.selected[i];
+                              widget.selected[k] = !widget.selected[k];
                             });
                           },
                         ));
