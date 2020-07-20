@@ -13,6 +13,9 @@ import 'dart:io';
 
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+ItemScrollController _scrollController = ItemScrollController();
+final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
+
 class DetailScreen extends StatefulWidget {
   final String name;
   final int book;
@@ -45,7 +48,8 @@ class _DetailScreenState extends State<DetailScreen> {
       bibleNum++;
     }
 
-    final fixedList = Iterable<int>.generate(bible[0][widget.book].length).toList();
+    final chapterList = Iterable<int>.generate(bible[0][widget.book].length).toList();
+    int currentVerse = 1;
 
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
@@ -64,7 +68,7 @@ class _DetailScreenState extends State<DetailScreen> {
       return writeBookmark(bookMarks);
     }
 
-    void _showDialog() {
+    void _showChapterDialog() {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -76,16 +80,17 @@ class _DetailScreenState extends State<DetailScreen> {
                   crossAxisCount: 5,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  children: fixedList.map((val) {
+                  children: chapterList.map((val) {
                     return MaterialButton(
                         onPressed: () {
                           setState(() {
                             widget.chapter = val;
+                            _scrollController.jumpTo(index: 0);
                             bookMarks[widget.book][widget.chapter][0]
                                 ? bookMarkIcon = Icons.bookmark
                                 : bookMarkIcon = Icons.bookmark_border;
-                            Navigator.pop(context);
                           });
+                          Navigator.pop(context);
                         },
                         color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                         minWidth: 0,
@@ -100,6 +105,38 @@ class _DetailScreenState extends State<DetailScreen> {
           });
     }
 
+    void _showVerseDialog(){
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          final verseList = Iterable<int>.generate(bible[0][widget.book][widget.chapter].length).toList();
+          return AlertDialog(
+              content: Container(
+                width: 1000,
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: verseList.map((val) {
+                    return MaterialButton(
+                        onPressed: () {
+                          _scrollController.jumpTo(index: val);
+                          Navigator.pop(context);
+                        },
+                        color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                        minWidth: 0,
+                        height: 0,
+                        padding: EdgeInsets.zero,
+                        child: Text('${val + 1}', style: TextStyle(fontSize: 20, color: Colors.white),)
+                    );
+                  }).toList(),
+                ),
+              )
+          );
+        }
+      );
+    }
     return Scaffold(
         appBar: AppBar(
           title: Center(child: Text(widget.name)),
@@ -116,8 +153,22 @@ class _DetailScreenState extends State<DetailScreen> {
                   Icon(Icons.keyboard_arrow_down, color: Colors.white,),
                 ],
               ),
-                onPressed: () => _showDialog(),
+                onPressed: () => _showChapterDialog(),
               ),
+            MaterialButton(
+              minWidth: 50,
+              height: 10,
+              padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              clipBehavior: Clip.antiAlias,
+              child:Row(
+                children: <Widget>[
+                  Text('절',
+                    style: TextStyle(fontSize: 18, color: Colors.white),),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                ],
+              ),
+              onPressed: () => _showVerseDialog(),
+            ),
             ToggleButtons(
               children: <Widget>[Icon(bookMarkIcon)],
               onPressed: (int i) => _setBookmark(),
@@ -167,7 +218,6 @@ class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
-    ItemScrollController _scrollController = ItemScrollController();
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;
@@ -205,7 +255,6 @@ class _VerseListState extends State<VerseList> {
                           }
                         }
                       }
-                      print(items);
                       Clipboard.setData(ClipboardData(text: items));
                       toast("클립보드에 복사되었습니다.");
                       Navigator.pop(context);
@@ -224,6 +273,7 @@ class _VerseListState extends State<VerseList> {
     return Scaffold(
         body: ScrollablePositionedList.builder(
             itemScrollController: _scrollController,
+            itemPositionsListener: _itemPositionsListener,
             initialScrollIndex: widget.verse,
             itemCount: widget.bible[0][widget.book][widget.chapter].length,
             itemBuilder: (context, i) {
