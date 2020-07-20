@@ -11,12 +11,15 @@ import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 class DetailScreen extends StatefulWidget {
   final String name;
   final int book;
   int chapter;
+  int verse;
 
-  DetailScreen({Key key, this.name, this.book, this.chapter}) : super(key: key);
+  DetailScreen({Key key, this.name, this.book, this.chapter, this.verse}) : super(key: key);
 
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -138,6 +141,7 @@ class _DetailScreenState extends State<DetailScreen> {
             bookName: widget.name,
             book: widget.book,
             chapter: widget.chapter,
+            verse: widget.verse,
             selected: List.generate(bible[0][widget.book][widget.chapter].length,
                     (i) => List.generate(bibleNum, (index) => false)))
     );
@@ -149,9 +153,10 @@ class VerseList extends StatefulWidget {
   final String bookName;
   final int book;
   final int chapter;
+  final int verse;
   final List selected;
 
-  const VerseList({Key key, this.bible, this.bookName, this.book, this.chapter, this.selected})
+  const VerseList({Key key, this.bible, this.bookName, this.book, this.chapter, this.verse, this.selected})
       : super(key: key);
 
   @override
@@ -162,6 +167,7 @@ class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    ItemScrollController _scrollController = ItemScrollController();
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;
@@ -181,12 +187,14 @@ class _VerseListState extends State<VerseList> {
         builder: (BuildContext context){
           return AlertDialog(
             title: Text("선택 절",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
-            content: Wrap(
-                direction: Axis.vertical,
+            content: Container(
+              width: double.maxFinite,
+              child: ListView(
+                shrinkWrap: true,
                 children: <Widget>[
-                  MaterialButton(
+                  InkWell(
                     child: Text("복사하기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
-                    onPressed: () {
+                    onTap: () {
                       String items = "";
                       for(int i=0; i<widget.selected.length; i++){
                         for(int j=0; j<widget.selected[i].length; j++){
@@ -208,12 +216,15 @@ class _VerseListState extends State<VerseList> {
 //                  ),
                 ],
               ),
+            ),
           );
         }
       );
     }
     return Scaffold(
-        body: ListView.builder(
+        body: ScrollablePositionedList.builder(
+            itemScrollController: _scrollController,
+            initialScrollIndex: widget.verse,
             itemCount: widget.bible[0][widget.book][widget.chapter].length,
             itemBuilder: (context, i) {
               int n = i + 1;

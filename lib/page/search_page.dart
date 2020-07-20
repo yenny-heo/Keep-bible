@@ -12,11 +12,13 @@ class SearchInfo {
   String bookName;
   int book;
   int chapter;
-  SearchInfo(content, bookName, book, chapter) {
+  int verse;
+  SearchInfo(content, bookName, book, chapter, verse) {
     this.content = content;
     this.bookName = bookName;
     this.book = book;
     this.chapter = chapter;
+    this.verse = verse;
   }
 }
 class SearchPage extends StatefulWidget {
@@ -38,12 +40,13 @@ class _SearchState extends State<SearchPage> {
             String content, bookName;
             int book = i, chapter = j;
             if (SearchList[i][j][k].contains(query)) {
+              int verse = k;
               if (i <= 38)
                 bookName = korOldB[i];
               else
                 bookName = korNewB[i-39];
               content = bookName + (j+1).toString() + ":" + (k+1).toString() + " "+SearchList[i][j][k];
-              SearchInfo s = SearchInfo(content, bookName, book, chapter);
+              SearchInfo s = SearchInfo(content, bookName, book, chapter, verse);
               listData.add(s);
             }
           }
@@ -143,7 +146,8 @@ class _SearchState extends State<SearchPage> {
                                       DetailScreen(
                                           name: items[idx].bookName,
                                           book: items[idx].book,
-                                          chapter: items[idx].chapter)));
+                                          chapter: items[idx].chapter,
+                                          verse: items[idx].verse)));
                         },
                       )
                     );

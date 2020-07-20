@@ -69,7 +69,8 @@ class BookmarkList extends StatelessWidget {
                               builder: (context) => DetailScreen(
                                   name: bookmarkList[i].bookName,
                                   book: bookmarkList[i].book,
-                                  chapter: bookmarkList[i].chapter)));
+                                  chapter: bookmarkList[i].chapter,
+                                  verse: 0)));
                     },
                   ));
             }));
