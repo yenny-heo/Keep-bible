@@ -178,7 +178,7 @@ class _VerseListState extends State<VerseList> {
                         : mode.scaffoldBackgroundColor,
                     border: Border(
                         bottom:
-                        BorderSide(color: Colors.grey, width: 2))),
+                        BorderSide(color: Colors.grey, width: 1))),
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -191,7 +191,7 @@ class _VerseListState extends State<VerseList> {
                                 : mode.scaffoldBackgroundColor,
                             border: Border(
                                 bottom:
-                                    BorderSide(color: Colors.grey, width: 1))),
+                                    BorderSide(color: Colors.grey, width: 0.5))),
                         child: ListTile(
                           leading: Text(
                             '$n',
