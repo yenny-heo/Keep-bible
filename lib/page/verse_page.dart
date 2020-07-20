@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keep_bible_app/data/korhrv.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
@@ -134,19 +135,23 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
         body: VerseList(
             bible: bible,
+            bookName: widget.name,
             book: widget.book,
             chapter: widget.chapter,
-            selected: List.generate(bible[0][widget.book][widget.chapter].length * bibleNum, (index) => false)));
+            selected: List.generate(bible[0][widget.book][widget.chapter].length,
+                    (i) => List.generate(bibleNum, (index) => false)))
+    );
   }
 }
 
 class VerseList extends StatefulWidget {
   final List bible;
+  final String bookName;
   final int book;
   final int chapter;
   final List selected;
 
-  const VerseList({Key key, this.bible, this.book, this.chapter, this.selected})
+  const VerseList({Key key, this.bible, this.bookName, this.book, this.chapter, this.selected})
       : super(key: key);
 
   @override
@@ -170,6 +175,43 @@ class _VerseListState extends State<VerseList> {
       selectedColors = lightTextSelected;
       unSelectedColors = lightTextUnselected;
     }
+    void _showDialog(){
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: Text("선택 절",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+            content: Wrap(
+                direction: Axis.vertical,
+                children: <Widget>[
+                  MaterialButton(
+                    child: Text("복사하기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+                    onPressed: () {
+                      String items = "";
+                      for(int i=0; i<widget.selected.length; i++){
+                        for(int j=0; j<widget.selected[i].length; j++){
+                          if(widget.selected[i][j]){
+                            items = items
+                                + widget.bookName + (widget.chapter + 1).toString() + ":" + (i+1).toString() + " "
+                                +(widget.bible[j][widget.book][widget.chapter][i]) + "\n";
+                          }
+                        }
+                      }
+                      print(items);
+                      Clipboard.setData(ClipboardData(text: items));
+                      toast("클립보드에 복사되었습니다.");
+                      Navigator.pop(context);
+                    },
+                  ),
+//                  MaterialButton(
+//                    child: Text("밑줄긋기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+//                  ),
+                ],
+              ),
+          );
+        }
+      );
+    }
     return Scaffold(
         body: ListView.builder(
             itemCount: widget.bible[0][widget.book][widget.chapter].length,
@@ -177,9 +219,6 @@ class _VerseListState extends State<VerseList> {
               int n = i + 1;
               return Container(
                 decoration: BoxDecoration(
-                    color: widget.selected[i]
-                        ? mode.focusColor
-                        : mode.scaffoldBackgroundColor,
                     border: Border(
                         bottom:
                         BorderSide(color: Colors.grey, width: 1))),
@@ -188,21 +227,21 @@ class _VerseListState extends State<VerseList> {
                   physics: ClampingScrollPhysics(),
                   itemCount: widget.bible.length,
                   itemBuilder: (context2, j) {
-                    int k = i * widget.bible.length + j;
                     return Container(
                         decoration: BoxDecoration(
-                            color: widget.selected[k]
+                            color: widget.selected[i][j]
                                 ? mode.focusColor
                                 : mode.scaffoldBackgroundColor,
                             border: Border(
                                 bottom:
                                     BorderSide(color: Colors.grey, width: 0.5))),
                         child: ListTile(
+                          selected: widget.selected[i][j],
                           leading: Text(
                             '$n',
                             style: TextStyle(
                                 fontSize: 18,
-                                color: widget.selected[k]
+                                color: widget.selected[i][j]
                                     ? selectedColors[j]
                                     : unSelectedColors[j]),
                           ),
@@ -210,14 +249,20 @@ class _VerseListState extends State<VerseList> {
                             widget.bible[j][widget.book][widget.chapter][i],
                             style: TextStyle(
                                 fontSize: 22,
-                                color: widget.selected[k]
+                                color: widget.selected[i][j]
                                     ? selectedColors[j]
                                     : unSelectedColors[j]),
                           ),
                           onTap: () {
                             setState(() {
-                              widget.selected[k] = !widget.selected[k];
+                              widget.selected[i][j] = !widget.selected[i][j];
                             });
+                          },
+                          onLongPress: () {
+                            setState(() {
+                              widget.selected[i][j] = true;
+                            });
+                            _showDialog();
                           },
                         ));
                   }));
