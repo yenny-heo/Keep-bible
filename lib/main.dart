@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
@@ -17,6 +18,9 @@ void main() {
   });
   readBookmark().then((List b){
     setBookmark(b);
+  });
+  readHighlight().then((List h){
+    setHighlight(h);
   });
   runApp(ChangeNotifierProvider<AppStateNotifier>(
       create: (context) => AppStateNotifier(), child: MyApp()));

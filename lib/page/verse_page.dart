@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:keep_bible_app/data/korhrv.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
+import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
@@ -49,7 +50,6 @@ class _DetailScreenState extends State<DetailScreen> {
     }
 
     final chapterList = Iterable<int>.generate(bible[0][widget.book].length).toList();
-    int currentVerse = 1;
 
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
@@ -231,38 +231,82 @@ class _VerseListState extends State<VerseList> {
       selectedColors = lightTextSelected;
       unSelectedColors = lightTextUnselected;
     }
+
+    Future<File> _setHighlight(){
+      for(int i=0; i<widget.selected.length; i++){
+        for(int j=0; j<widget.selected[i].length; j++){
+          if(widget.selected[i][j]){
+            setState(() {
+              highlights[widget.book][widget.chapter][i] = true;
+              widget.selected[i][j] = false;
+            });
+          }
+        }
+      }
+      Navigator.pop(context);
+      return writeHighlight(highlights);
+    }
+    Future<File> _removeHighlight(){
+      for(int i=0; i<widget.selected.length; i++){
+        for(int j=0; j<widget.selected[i].length; j++){
+          if(widget.selected[i][j]){
+            setState(() {
+              highlights[widget.book][widget.chapter][i] = false;
+              widget.selected[i][j] = false;
+            });
+          }
+        }
+      }
+      Navigator.pop(context);
+      return writeHighlight(highlights);
+    }
+    void _copyVerses(){
+      String items = "";
+      for(int i=0; i<widget.selected.length; i++){
+        for(int j=0; j<widget.selected[i].length; j++){
+          if(widget.selected[i][j]){
+            items = items
+                + widget.bookName + (widget.chapter + 1).toString() + ":" + (i+1).toString() + " "
+                +(widget.bible[j][widget.book][widget.chapter][i]) + "\n";
+          }
+        }
+      }
+      Clipboard.setData(ClipboardData(text: items));
+      toast("클립보드에 복사되었습니다.");
+      Navigator.pop(context);
+    }
     void _showDialog(){
       showDialog(
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            title: Text("선택 절",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+            title: Text("선택 절",style: TextStyle(fontSize: 18, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
             content: Container(
               width: double.maxFinite,
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
                   InkWell(
-                    child: Text("복사하기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
-                    onTap: () {
-                      String items = "";
-                      for(int i=0; i<widget.selected.length; i++){
-                        for(int j=0; j<widget.selected[i].length; j++){
-                          if(widget.selected[i][j]){
-                            items = items
-                                + widget.bookName + (widget.chapter + 1).toString() + ":" + (i+1).toString() + " "
-                                +(widget.bible[j][widget.book][widget.chapter][i]) + "\n";
-                          }
-                        }
-                      }
-                      Clipboard.setData(ClipboardData(text: items));
-                      toast("클립보드에 복사되었습니다.");
-                      Navigator.pop(context);
-                    },
+                    child: Container(
+                      padding: EdgeInsets.all(12.0),
+                      child:  Text("복사하기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+                    ),
+                    onTap: () => _copyVerses(),
                   ),
-//                  MaterialButton(
-//                    child: Text("밑줄긋기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
-//                  ),
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(12.0),
+                      child:  Text("밑줄긋기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+                    ),
+                    onTap: () => _setHighlight(),
+                  ),
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(12.0),
+                      child:  Text("밑줄 해제하기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+                    ),
+                    onTap: () => _removeHighlight(),
+                  ),
                 ],
               ),
             ),
@@ -312,7 +356,9 @@ class _VerseListState extends State<VerseList> {
                                 fontSize: 22,
                                 color: widget.selected[i][j]
                                     ? selectedColors[j]
-                                    : unSelectedColors[j]),
+                                    : unSelectedColors[j],
+                                backgroundColor: highlights[widget.book][widget.chapter][i] ? Colors.indigo : null
+                            ),
                           ),
                           onTap: () {
                             setState(() {
