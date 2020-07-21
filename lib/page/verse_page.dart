@@ -218,6 +218,7 @@ class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    Color highlightColor = isDark ? Colors.white38 : Color(0xffeeca54);
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;
@@ -357,7 +358,7 @@ class _VerseListState extends State<VerseList> {
                                 color: widget.selected[i][j]
                                     ? selectedColors[j]
                                     : unSelectedColors[j],
-                                backgroundColor: highlights[widget.book][widget.chapter][i] ? Colors.indigo : null
+                                backgroundColor: highlights[widget.book][widget.chapter][i] ? highlightColor : null
                             ),
                           ),
                           onTap: () {

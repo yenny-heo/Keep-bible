@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/day_night_mode.dart';
 import 'package:keep_bible_app/page/bible_selection_page.dart';
 import 'package:keep_bible_app/page/bookmark_page.dart';
+import 'package:keep_bible_app/page/highlight_page.dart';
 import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -75,6 +76,13 @@ class _NavDrawerState extends State<NavDrawer> {
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BookmarkList()))
+          },
+        ),
+        InkWell(
+          child: MenuText('밑줄 목록', isDark),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HighlightList()))
           },
         ),
         InkWell(
