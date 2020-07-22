@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
@@ -10,13 +11,13 @@ import 'verse_page.dart';
 List<HighlightInfo> highlightList = List<HighlightInfo>();
 
 class HighlightInfo {
-  String fullName;
+  String fullContent;
   String bookName;
   int book;
   int chapter;
   int verse;
-  HighlightInfo(fullName, bookName, book, chapter, verse) {
-    this.fullName = fullName;
+  HighlightInfo(fullContent, bookName, book, chapter, verse) {
+    this.fullContent = fullContent;
     this.bookName = bookName;
     this.book = book;
     this.chapter = chapter;
@@ -34,23 +35,24 @@ class HighlightList extends StatelessWidget {
       for (int j = 0; j < highlights[i].length; j++) {
         for (int k = 0; k < highlights[i][j].length; k++){
           if(highlights[i][j][k]){
-            String fullName, bookName;
+            String fullContent, bookName;
             if (i <= 38) {
               //구약
-              fullName = korOldB[i] + " " + (j + 1).toString() + "장 " + (k+1).toString() + "절";
+              fullContent = korOldB[i] + " " + (j + 1).toString() + ":" + (k+1).toString();
               bookName = korOldB[i];
             } else {
-              fullName = korNewB[i - 39] + " " + (j + 1).toString() + "장 " + (k+1).toString() + "절";
+              fullContent = korNewB[i - 39] + " " + (j + 1).toString() + "장 " + (k+1).toString();
               bookName = korNewB[i - 39];
             }
-            HighlightInfo h = HighlightInfo(fullName, bookName, i, j, k);
+            fullContent += " " + korhkjv[i][j][k];
+            HighlightInfo h = HighlightInfo(fullContent, bookName, i, j, k);
             highlightList.add(h);
           }
         }
       }
     }
     return Scaffold(
-        appBar: AppBar(title: Text('책갈피 목록')),
+        appBar: AppBar(title: Text('밑줄 목록')),
         body: ListView.builder(
             itemCount: highlightList.length,
             itemBuilder: (context, i) {
@@ -60,9 +62,9 @@ class HighlightList extends StatelessWidget {
                           bottom: BorderSide(color: Colors.grey, width: 1))),
                   child: ListTile(
                     title: Center(
-                        child: Text(highlightList[i].fullName,
+                        child: Text(highlightList[i].fullContent,
                             style: TextStyle(
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
                             ))),
                     onTap: () {
