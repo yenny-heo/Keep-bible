@@ -37,7 +37,12 @@ class _NavDrawerState extends State<NavDrawer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            MenuText('모드', isDark),
+            Row(
+              children: <Widget>[
+                MenuIcon(Icons.brightness_4, isDark),
+                MenuText('모드', isDark),
+              ],
+            ),
             Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: ToggleButtons(
@@ -65,28 +70,48 @@ class _NavDrawerState extends State<NavDrawer> {
           ],
         ),
         InkWell(
-          child: MenuText('역본 선택', isDark),
+          child: Row(
+            children: <Widget>[
+              MenuIcon(Icons.library_books, isDark),
+              MenuText('역본 선택', isDark),
+            ],
+          ),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BibleSelection()))
           }
         ),
         InkWell(
-          child: MenuText('책갈피 목록', isDark),
+          child: Row(
+            children: <Widget>[
+              MenuIcon(Icons.bookmark, isDark),
+              MenuText('책갈피 목록', isDark),
+            ],
+          ),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BookmarkList()))
           },
         ),
         InkWell(
-          child: MenuText('밑줄 목록', isDark),
+          child: Row(
+            children: <Widget>[
+              MenuIcon(Icons.border_color, isDark),
+              MenuText('밑줄 목록', isDark),
+            ],
+          ),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HighlightList()))
           },
         ),
         InkWell(
-          child: MenuText('검색', isDark),
+          child: Row(
+            children: <Widget>[
+              MenuIcon(Icons.search, isDark),
+              MenuText('검색', isDark),
+            ],
+          ),
           onTap: () => {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => SearchPage()))
@@ -104,5 +129,12 @@ Container MenuText(String text, bool isDark) {
         fontSize: 20,
       color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
     )),
+  );
+}
+
+Container MenuIcon(IconData icon, bool isDark){
+  return Container(
+    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+    child: Icon(icon, color: isDark ? Colors.white:Colors.black,),
   );
 }

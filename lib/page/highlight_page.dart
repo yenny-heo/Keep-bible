@@ -41,7 +41,7 @@ class HighlightList extends StatelessWidget {
               fullContent = korOldB[i] + " " + (j + 1).toString() + ":" + (k+1).toString();
               bookName = korOldB[i];
             } else {
-              fullContent = korNewB[i - 39] + " " + (j + 1).toString() + "장 " + (k+1).toString();
+              fullContent = korNewB[i - 39] + " " + (j + 1).toString() + ":" + (k+1).toString();
               bookName = korNewB[i - 39];
             }
             fullContent += " " + korhkjv[i][j][k];
