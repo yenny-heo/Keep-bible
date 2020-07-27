@@ -11,11 +11,9 @@ import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 ItemScrollController _scrollController = ItemScrollController();
-final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
 
 class DetailScreen extends StatefulWidget {
   final String name;
@@ -74,7 +72,7 @@ class _DetailScreenState extends State<DetailScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               content: Container(
-                width: 1000,
+                width: 300,
                 child: GridView.count(
                   shrinkWrap: true,
                   crossAxisCount: 5,
@@ -112,7 +110,7 @@ class _DetailScreenState extends State<DetailScreen> {
           final verseList = Iterable<int>.generate(bible[0][widget.book][widget.chapter].length).toList();
           return AlertDialog(
               content: Container(
-                width: 1000,
+                width: 300,
                 child: GridView.count(
                   shrinkWrap: true,
                   crossAxisCount: 5,
@@ -315,14 +313,11 @@ class _VerseListState extends State<VerseList> {
         }
       );
     }
-    return Scaffold(
-        body: ScrollablePositionedList.builder(
+    return ScrollablePositionedList.builder(
             itemScrollController: _scrollController,
-            itemPositionsListener: _itemPositionsListener,
             initialScrollIndex: widget.verse,
             itemCount: widget.bible[0][widget.book][widget.chapter].length,
             itemBuilder: (context, i) {
-              int n = i + 1;
               return Container(
                 decoration: BoxDecoration(
                     border: Border(
@@ -331,6 +326,7 @@ class _VerseListState extends State<VerseList> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
+                  padding: EdgeInsets.zero,
                   itemCount: widget.bible.length,
                   itemBuilder: (context2, j) {
                     return Container(
@@ -343,16 +339,8 @@ class _VerseListState extends State<VerseList> {
                                     BorderSide(color: Colors.grey, width: 0.5))),
                         child: ListTile(
                           selected: widget.selected[i][j],
-                          leading: Text(
-                            '$n',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: widget.selected[i][j]
-                                    ? selectedColors[j]
-                                    : unSelectedColors[j]),
-                          ),
                           title: Text(
-                            widget.bible[j][widget.book][widget.chapter][i],
+                            "${i+1}. ${widget.bible[j][widget.book][widget.chapter][i]}",
                             style: TextStyle(
                                 fontSize: 22,
                                 color: widget.selected[i][j]
@@ -372,8 +360,10 @@ class _VerseListState extends State<VerseList> {
                             });
                             _showDialog();
                           },
-                        ));
-                  }));
-            }));
+                        )
+                    );
+                  })
+              );
+            });
   }
 }

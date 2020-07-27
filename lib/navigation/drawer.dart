@@ -39,8 +39,8 @@ class _NavDrawerState extends State<NavDrawer> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                MenuIcon(Icons.brightness_4, isDark),
-                MenuText('모드', isDark),
+                _menuIcon(Icons.brightness_4, isDark),
+                _menuText('모드', isDark),
               ],
             ),
             Container(
@@ -72,8 +72,8 @@ class _NavDrawerState extends State<NavDrawer> {
         InkWell(
           child: Row(
             children: <Widget>[
-              MenuIcon(Icons.library_books, isDark),
-              MenuText('역본 선택', isDark),
+              _menuIcon(Icons.library_books, isDark),
+              _menuText('역본 선택', isDark),
             ],
           ),
           onTap: () => {
@@ -84,8 +84,8 @@ class _NavDrawerState extends State<NavDrawer> {
         InkWell(
           child: Row(
             children: <Widget>[
-              MenuIcon(Icons.bookmark, isDark),
-              MenuText('책갈피 목록', isDark),
+              _menuIcon(Icons.bookmark, isDark),
+              _menuText('책갈피 목록', isDark),
             ],
           ),
           onTap: () => {
@@ -96,8 +96,8 @@ class _NavDrawerState extends State<NavDrawer> {
         InkWell(
           child: Row(
             children: <Widget>[
-              MenuIcon(Icons.border_color, isDark),
-              MenuText('밑줄 목록', isDark),
+              _menuIcon(Icons.border_color, isDark),
+              _menuText('밑줄 목록', isDark),
             ],
           ),
           onTap: () => {
@@ -108,8 +108,8 @@ class _NavDrawerState extends State<NavDrawer> {
         InkWell(
           child: Row(
             children: <Widget>[
-              MenuIcon(Icons.search, isDark),
-              MenuText('검색', isDark),
+              _menuIcon(Icons.search, isDark),
+              _menuText('검색', isDark),
             ],
           ),
           onTap: () => {
@@ -122,7 +122,7 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 }
 
-Container MenuText(String text, bool isDark) {
+Container _menuText(String text, bool isDark) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
     child: Text(text, style: TextStyle(
@@ -132,7 +132,7 @@ Container MenuText(String text, bool isDark) {
   );
 }
 
-Container MenuIcon(IconData icon, bool isDark){
+Container _menuIcon(IconData icon, bool isDark){
   return Container(
     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
     child: Icon(icon, color: isDark ? Colors.white:Colors.black,),

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-               BuildableName = "&#x110f;&#x1175;&#x11bc;&#x110c;&#x1166;&#x110b;&#x1175;&#x11b7;&#x1109;&#x1173; &#x1112;&#x1173;&#x11b7;&#x110c;&#x1165;&#x11bc;&#x110b;&#x1167;&#x11a8;.app"
+               BuildableName = "Runner.app"
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x110f;&#x1175;&#x11bc;&#x110c;&#x1166;&#x110b;&#x1175;&#x11b7;&#x1109;&#x1173; &#x1112;&#x1173;&#x11b7;&#x110c;&#x1165;&#x11bc;&#x110b;&#x1167;&#x11a8;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -40,7 +40,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x110f;&#x1175;&#x11bc;&#x110c;&#x1166;&#x110b;&#x1175;&#x11b7;&#x1109;&#x1173; &#x1112;&#x1173;&#x11b7;&#x110c;&#x1165;&#x11bc;&#x110b;&#x1167;&#x11a8;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x110f;&#x1175;&#x11bc;&#x110c;&#x1166;&#x110b;&#x1175;&#x11b7;&#x1109;&#x1173; &#x1112;&#x1173;&#x11b7;&#x110c;&#x1165;&#x11bc;&#x110b;&#x1167;&#x11a8;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
