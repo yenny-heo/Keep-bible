@@ -61,12 +61,11 @@ class HighlightList extends StatelessWidget {
                       border: Border(
                           bottom: BorderSide(color: Colors.grey, width: 1))),
                   child: ListTile(
-                    title: Center(
-                        child: Text(highlightList[i].fullContent,
+                    title: Text(highlightList[i].fullContent,
                             style: TextStyle(
                                 fontSize: 20,
                                 color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
-                            ))),
+                            )),
                     onTap: () {
                       Navigator.push(
                           context,
