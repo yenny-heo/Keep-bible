@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-ItemScrollController _scrollController = ItemScrollController();
+ItemScrollController _scrollController;
 
 class DetailScreen extends StatefulWidget {
   final String name;
@@ -28,6 +28,14 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   IconData bookMarkIcon;
+  int currentPage;
+  @override
+  void initState() {
+    // TODO: implement initState
+    currentPage = widget.chapter;
+    _scrollController = ItemScrollController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +58,12 @@ class _DetailScreenState extends State<DetailScreen> {
     final chapterList = Iterable<int>.generate(bible[0][widget.book].length).toList();
 
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
-    bookMarks[widget.book][widget.chapter][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
+    bookMarks[widget.book][currentPage][0] ? bookMarkIcon = Icons.bookmark : bookMarkIcon = Icons.bookmark_border;
 
     Future<File> _setBookmark() {
-      bool flag = bookMarks[widget.book][widget.chapter][0];
+      bool flag = bookMarks[widget.book][currentPage][0];
       setState(() {
-        bookMarks[widget.book][widget.chapter][0] = !flag;
+        bookMarks[widget.book][currentPage][0] = !flag;
         flag ? bookMarkIcon = Icons.bookmark: bookMarkIcon = Icons.bookmark_border;
       });
       if(!flag)
@@ -82,9 +90,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     return MaterialButton(
                         onPressed: () {
                           setState(() {
-                            widget.chapter = val;
+                            currentPage = val;
                             _scrollController.jumpTo(index: 0);
-                            bookMarks[widget.book][widget.chapter][0]
+                            bookMarks[widget.book][currentPage][0]
                                 ? bookMarkIcon = Icons.bookmark
                                 : bookMarkIcon = Icons.bookmark_border;
                           });
@@ -107,7 +115,7 @@ class _DetailScreenState extends State<DetailScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context){
-          final verseList = Iterable<int>.generate(bible[0][widget.book][widget.chapter].length).toList();
+          final verseList = Iterable<int>.generate(bible[0][widget.book][currentPage].length).toList();
           return AlertDialog(
               content: Container(
                 width: 300,
@@ -146,7 +154,7 @@ class _DetailScreenState extends State<DetailScreen> {
               clipBehavior: Clip.antiAlias,
               child:Row(
                 children: <Widget>[
-                  Text('${widget.chapter+1} 장',
+                  Text('${currentPage+1} 장',
                     style: TextStyle(fontSize: 18, color: Colors.white),),
                   Icon(Icons.keyboard_arrow_down, color: Colors.white,),
                 ],
@@ -170,7 +178,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ToggleButtons(
               children: <Widget>[Icon(bookMarkIcon)],
               onPressed: (int i) => _setBookmark(),
-              isSelected: bookMarks[widget.book][widget.chapter].cast<bool>(),
+              isSelected: bookMarks[widget.book][currentPage].cast<bool>(),
               color: Colors.white,
               fillColor: isDark
                 ? AppTheme.darkMode.primaryColor
@@ -185,14 +193,30 @@ class _DetailScreenState extends State<DetailScreen> {
             )
           ],
         ),
-        body: VerseList(
-            bible: bible,
-            bookName: widget.name,
-            book: widget.book,
-            chapter: widget.chapter,
-            verse: widget.verse,
-            selected: List.generate(bible[0][widget.book][widget.chapter].length,
-                    (i) => List.generate(bibleNum, (index) => false)))
+        body: GestureDetector(
+          onHorizontalDragEnd: (DragEndDetails details) {
+            if(details.velocity.pixelsPerSecond.dx>0 && currentPage > 0){
+              setState(() {
+                currentPage -= 1;
+                _scrollController.jumpTo(index: 0);
+              });
+            }
+            else if(details.velocity.pixelsPerSecond.dx<0 && currentPage < bible[0][widget.book].length - 1){
+              setState(() {
+                currentPage += 1;
+                _scrollController.jumpTo(index: 0);
+              });
+            }
+          },
+            child: VerseList(
+                bible: bible,
+                bookName: widget.name,
+                book: widget.book,
+                chapter: currentPage,
+                verse: widget.verse,
+                selected: List.generate(bible[0][widget.book][currentPage].length,
+                        (i) => List.generate(bibleNum, (index) => false)))
+        )
     );
   }
 }
