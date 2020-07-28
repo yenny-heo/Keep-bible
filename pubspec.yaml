@@ -25,6 +25,7 @@ dependencies:
   path_provider: ^1.6.11
   fluttertoast: ^7.0.1
   scrollable_positioned_list: ^0.1.6
+  draggable_scrollbar: ^0.0.4
   flutter:
     sdk: flutter
 

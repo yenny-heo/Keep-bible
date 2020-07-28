@@ -7,12 +7,17 @@ import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 
+
+String query = "";
+bool isDark = false;
+
 class SearchInfo {
   String content;
   String bookName;
   int book;
   int chapter;
   int verse;
+
   SearchInfo(content, bookName, book, chapter, verse) {
     this.content = content;
     this.bookName = bookName;
@@ -21,6 +26,7 @@ class SearchInfo {
     this.verse = verse;
   }
 }
+
 class SearchPage extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
@@ -28,25 +34,28 @@ class SearchPage extends StatefulWidget {
 
 class _SearchState extends State<SearchPage> {
   var items = List<SearchInfo>();
-  String query = "";
 
   void filterSearchResults(String query) {
-    var SearchList = korhkjv;
+    var searchList = korhkjv;
     if (query.isNotEmpty) {
       List<SearchInfo> listData = List<SearchInfo>();
-      for (int i = 0; i < SearchList.length; i++) {
-        for (int j = 0; j < SearchList[i].length; j++) {
-          for (int k = 0; k < SearchList[i][j].length; k++) {
+      for (int i = 0; i < searchList.length; i++) {
+        for (int j = 0; j < searchList[i].length; j++) {
+          for (int k = 0; k < searchList[i][j].length; k++) {
             String content, bookName;
-            int book = i, chapter = j;
-            if (SearchList[i][j][k].contains(query)) {
+            int book = i,
+                chapter = j;
+            if (searchList[i][j][k].contains(query)) {
               int verse = k;
               if (i <= 38)
                 bookName = korOldB[i];
               else
-                bookName = korNewB[i-39];
-              content = bookName + (j+1).toString() + ":" + (k+1).toString() + " "+SearchList[i][j][k];
-              SearchInfo s = SearchInfo(content, bookName, book, chapter, verse);
+                bookName = korNewB[i - 39];
+              content =
+                  bookName + (j + 1).toString() + ":" + (k + 1).toString() +
+                      " " + searchList[i][j][k];
+              SearchInfo s = SearchInfo(
+                  content, bookName, book, chapter, verse);
               listData.add(s);
             }
           }
@@ -56,11 +65,11 @@ class _SearchState extends State<SearchPage> {
         items.clear();
         items.addAll(listData);
       });
-      if(listData.isEmpty){
+      if (listData.isEmpty) {
         toast("일치하는 검색어가 없습니다");
       }
     }
-    else{
+    else {
       setState(() {
         items.clear();
       });
@@ -69,8 +78,8 @@ class _SearchState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark =
-    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    isDark =
+        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
         appBar: AppBar(title: Text('검색')),
         body: Container(
@@ -84,34 +93,36 @@ class _SearchState extends State<SearchPage> {
                     Expanded(
                         child: TextField(
                           style: TextStyle(
-                              color: isDark? AppTheme.darkMode.accentColor: AppTheme.lightMode.accentColor
+                              color: isDark
+                                  ? AppTheme.darkMode.accentColor
+                                  : AppTheme.lightMode.accentColor
                           ),
-                      onChanged: (val) {
-                        query = val;
-                      },
-                      decoration: InputDecoration(
-                        labelText: "검색",
-                        hintText: "키워드로 검색하세요",
-                        labelStyle: TextStyle(
-                          color: Colors.grey
-                        ),
-                        hintStyle: TextStyle(
-                            color: Colors.grey
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
+                          onChanged: (val) {
+                            query = val;
+                          },
+                          decoration: InputDecoration(
+                            labelText: "검색",
+                            hintText: "키워드로 검색하세요",
+                            labelStyle: TextStyle(
+                                color: Colors.grey
+                            ),
+                            hintStyle: TextStyle(
+                                color: Colors.grey
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                color: AppTheme.lightMode.primaryColor,
-                            width: 2)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
+                                borderSide: BorderSide(
+                                    color: AppTheme.lightMode.primaryColor,
+                                    width: 2)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                color: Colors.grey,
-                                width: 2)),
-                      ),
-                    )),
+                                borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 2)),
+                          ),
+                        )),
                     IconButton(
                       icon: Icon(Icons.search),
                       color: Colors.grey,
@@ -121,41 +132,84 @@ class _SearchState extends State<SearchPage> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: items.length,
-                  itemBuilder: (context, idx){
-                    return Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom:
-                              BorderSide(color: Colors.grey, width: 1))
-                      ),
-                      child:
-                      ListTile(
-                        title: Text(
-                          '${items[idx].content}',
-                          style: TextStyle(
-                              fontSize: 20,
-                            color: isDark? AppTheme.darkMode.accentColor: AppTheme.lightMode.accentColor
-                          ),),
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailScreen(
-                                          name: items[idx].bookName,
-                                          book: items[idx].book,
-                                          chapter: items[idx].chapter,
-                                          verse: items[idx].verse)));
-                        },
-                      )
-                    );
-                  },
-                )
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: (context, idx) {
+                        return Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.grey, width: 1))
+                            ),
+                            child:
+                            ListTile(
+                              title: RichText(
+                                  text: searchMatch(items[idx].content, isDark)
+                              ),
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailScreen(
+                                                name: items[idx].bookName,
+                                                book: items[idx].book,
+                                                chapter: items[idx].chapter,
+                                                verse: items[idx].verse)));
+                              },
+                            )
+                        );
+                      },
+                    ),
+                  )
               )
             ],
           ),
         ));
+  }
+}
+
+TextStyle negRes(isDark) {
+  return TextStyle(color: isDark ? AppTheme.darkMode.accentColor : AppTheme.lightMode
+      .accentColor,
+      backgroundColor: isDark
+          ? AppTheme.darkMode.scaffoldBackgroundColor
+          : AppTheme.lightMode.scaffoldBackgroundColor);
+}
+
+TextStyle posRes(isDark) {
+  return TextStyle(color: Colors.white,
+      backgroundColor: Color(0xff546fee));
+}
+
+TextSpan searchMatch(String match, bool isDark) {
+  if (query == "" || query == null) {
+    return null;
+  }
+  if (match.contains(query)) {
+    if (match.substring(0, query.length) == query) {
+      return TextSpan(
+          style: posRes(isDark),
+          text: match.substring(0, query.length),
+          children: [
+            searchMatch(match.substring(query.length), isDark)
+          ]
+      );
+    }
+    else {
+      return TextSpan(
+          style: negRes(isDark),
+          text: match.substring(0, match.indexOf(query)),
+          children: [
+            searchMatch(match.substring(match.indexOf(query)), isDark)
+          ]
+      );
+    }
+  }
+  else {
+    return TextSpan(
+        style: negRes(isDark),
+        text: match
+    );
   }
 }
