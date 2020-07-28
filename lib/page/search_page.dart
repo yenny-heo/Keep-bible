@@ -7,7 +7,6 @@ import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 
-
 String query = "";
 bool isDark = false;
 
