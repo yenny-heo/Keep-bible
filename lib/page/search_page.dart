@@ -169,15 +169,15 @@ class _SearchState extends State<SearchPage> {
 }
 
 TextStyle negRes(isDark) {
-  return TextStyle(color: isDark ? AppTheme.darkMode.accentColor : AppTheme.lightMode
-      .accentColor,
+  return TextStyle(color: isDark ? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor,
+      fontSize: 18,
       backgroundColor: isDark
           ? AppTheme.darkMode.scaffoldBackgroundColor
           : AppTheme.lightMode.scaffoldBackgroundColor);
 }
 
 TextStyle posRes(isDark) {
-  return TextStyle(color: Colors.white,
+  return TextStyle(color: Colors.white, fontSize: 18,
       backgroundColor: Color(0xff546fee));
 }
 
