@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keep_bible_app/data/korhrv.dart';
+import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
+import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -24,6 +26,14 @@ class DetailScreen extends StatefulWidget {
   DetailScreen({Key key, this.name, this.book, this.chapter, this.verse}) : super(key: key);
 
   _DetailScreenState createState() => _DetailScreenState();
+}
+
+extension ExtendedIterable<E> on Iterable<E> {
+  /// Like Iterable<T>.map but callback have index as second argument
+  Iterable<T> mapIndex<T>(T f(E e, int i)) {
+    var i = 0;
+    return this.map((e) => f(e, i++));
+  }
 }
 
 class _DetailScreenState extends State<DetailScreen> {
@@ -72,6 +82,72 @@ class _DetailScreenState extends State<DetailScreen> {
         toast("책갈피가 삭제되었습니다.");
 
       return writeBookmark(bookMarks);
+    }
+
+    void _showBookDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                body: TabBarView(
+                  children: <Widget>[
+                    GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 2,
+                        children: korOldB.mapIndex((val, idx){
+                          return MaterialButton(
+                              onPressed: (){
+                                Navigator.pop(context);//popup 창 삭제
+                                Navigator.pop(context);//현재 켜진 창 삭제
+                                Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
+                              },
+                              color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                              minWidth: 0,
+                              height: 0,
+                              padding: EdgeInsets.zero,
+                              child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
+                          );
+                        }).toList()
+                    ),
+                    GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 2,
+                        children: korNewB.mapIndex((val, idx){
+                          return MaterialButton(
+                              onPressed: (){
+                                Navigator.pop(context);//popup 창 삭제
+                                Navigator.pop(context);//현재 켜진 창 삭제
+                                Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
+                              },
+                              color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                              minWidth: 0,
+                              height: 0,
+                              padding: EdgeInsets.zero,
+                              child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
+                          );
+                        }).toList()
+                    ),
+                  ],
+                ),
+                bottomNavigationBar: Bottom(),
+              ),
+            )
+          );
+        }
+      );
     }
 
     void _showChapterDialog() {
@@ -145,7 +221,17 @@ class _DetailScreenState extends State<DetailScreen> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text(widget.name)),
+          centerTitle: true,
+          title:MaterialButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(widget.name, style: TextStyle(fontSize: 20, color: Colors.white),),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+              ],
+            ),
+            onPressed: () => _showBookDialog(),
+          ),
           actions: <Widget>[
             MaterialButton(
               minWidth: 50,
