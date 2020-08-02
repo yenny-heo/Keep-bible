@@ -89,61 +89,65 @@ class _DetailScreenState extends State<DetailScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: isDark? AppTheme.darkMode.scaffoldBackgroundColor:AppTheme.lightMode.scaffoldBackgroundColor,
             content: DefaultTabController(
               length: 2,
-              child: Scaffold(
-                body: TabBarView(
-                  children: <Widget>[
-                    GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2,
-                        children: korOldB.mapIndex((val, idx){
-                          return MaterialButton(
-                              onPressed: (){
-                                Navigator.pop(context);//popup 창 삭제
-                                Navigator.pop(context);//현재 켜진 창 삭제
-                                Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
-                              },
-                              color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
-                              minWidth: 0,
-                              height: 0,
-                              padding: EdgeInsets.zero,
-                              child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
-                          );
-                        }).toList()
-                    ),
-                    GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2,
-                        children: korNewB.mapIndex((val, idx){
-                          return MaterialButton(
-                              onPressed: (){
-                                Navigator.pop(context);//popup 창 삭제
-                                Navigator.pop(context);//현재 켜진 창 삭제
-                                Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
-                              },
-                              color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
-                              minWidth: 0,
-                              height: 0,
-                              padding: EdgeInsets.zero,
-                              child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
-                          );
-                        }).toList()
-                    ),
-                  ],
+              child: Container(
+                height: 650,
+                child: Scaffold(
+                  body: TabBarView(
+                    children: <Widget>[
+                      GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 2,
+                          children: korOldShortB.mapIndex((val, idx){
+                            return MaterialButton(
+                                onPressed: (){
+                                  Navigator.pop(context);//popup 창 삭제
+                                  Navigator.pop(context);//현재 켜진 창 삭제
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
+                                },
+                                color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                                minWidth: 0,
+                                height: 0,
+                                padding: EdgeInsets.zero,
+                                child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
+                            );
+                          }).toList()
+                      ),
+                      GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 2,
+                          children: korNewShortB.mapIndex((val, idx){
+                            return MaterialButton(
+                                onPressed: (){
+                                  Navigator.pop(context);//popup 창 삭제
+                                  Navigator.pop(context);//현재 켜진 창 삭제
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
+                                },
+                                color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                                minWidth: 0,
+                                height: 0,
+                                padding: EdgeInsets.zero,
+                                child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
+                            );
+                          }).toList()
+                      ),
+                    ],
+                  ),
+                  bottomNavigationBar: Bottom(),
                 ),
-                bottomNavigationBar: Bottom(),
-              ),
+              )
             )
           );
         }

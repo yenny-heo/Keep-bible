@@ -5,7 +5,6 @@ class Bottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
         height: 50,
         child: TabBar(
           indicatorColor: AppTheme.lightMode.primaryColor,
@@ -17,6 +16,6 @@ class Bottom extends StatelessWidget {
             Tab(
                 child: Text('신약', style: TextStyle(fontSize: 22))),
           ],
-        ),),);
+        ),);
   }
 }

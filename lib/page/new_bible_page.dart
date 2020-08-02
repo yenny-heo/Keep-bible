@@ -42,7 +42,7 @@ class NewBibleList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreen(name: korNewB[i], book: i + 39, chapter: 0, verse: 0,)));
+                                DetailScreen(name: korNewShortB[i], book: i + 39, chapter: 0, verse: 0,)));
                   },
                 ));
           }),
