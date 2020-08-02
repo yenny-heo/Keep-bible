@@ -47,12 +47,10 @@ class _SearchState extends State<SearchPage> {
             if (searchList[i][j][k].contains(query)) {
               int verse = k;
               if (i <= 38)
-                bookName = korOldB[i];
+                bookName = korOldShortB[i];
               else
-                bookName = korNewB[i - 39];
-              content =
-                  bookName + (j + 1).toString() + ":" + (k + 1).toString() +
-                      " " + searchList[i][j][k];
+                bookName = korNewShortB[i - 39];
+              content = bookName + (j + 1).toString() + ":" + (k + 1).toString() + " " + searchList[i][j][k];
               SearchInfo s = SearchInfo(
                   content, bookName, book, chapter, verse);
               listData.add(s);

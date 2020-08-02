@@ -36,10 +36,10 @@ class BookmarkList extends StatelessWidget {
           if (i <= 38) {
             //구약
             fullName = korOldB[i] + " " + (j + 1).toString() + "장";
-            bookName = korOldB[i];
+            bookName = korOldShortB[i];
           } else {
             fullName = korNewB[i - 39] + " " + (j + 1).toString() + "장";
-            bookName = korNewB[i - 39];
+            bookName = korNewShortB[i - 39];
           }
           BookmarkInfo b = BookmarkInfo(fullName, bookName, book, chapter);
           bookmarkList.add(b);

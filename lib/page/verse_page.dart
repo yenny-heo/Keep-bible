@@ -92,33 +92,34 @@ class _DetailScreenState extends State<DetailScreen> {
             backgroundColor: isDark? AppTheme.darkMode.scaffoldBackgroundColor:AppTheme.lightMode.scaffoldBackgroundColor,
             content: DefaultTabController(
               length: 2,
+              initialIndex: widget.book < 39 ? 0 : 1,
               child: Container(
                 height: 650,
                 child: Scaffold(
                   body: TabBarView(
                     children: <Widget>[
                       GridView.count(
-                          shrinkWrap: true,
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 2,
-                          children: korOldShortB.mapIndex((val, idx){
-                            return MaterialButton(
-                                onPressed: (){
-                                  Navigator.pop(context);//popup 창 삭제
-                                  Navigator.pop(context);//현재 켜진 창 삭제
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
-                                },
-                                color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
-                                minWidth: 0,
-                                height: 0,
-                                padding: EdgeInsets.zero,
-                                child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
-                            );
-                          }).toList()
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 2,
+                        children: korOldShortB.mapIndex((val, idx){
+                          return MaterialButton(
+                              onPressed: (){
+                                Navigator.pop(context);//popup 창 삭제
+                                Navigator.pop(context);//현재 켜진 창 삭제
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
+                              },
+                              color: widget.book == idx? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                              minWidth: 0,
+                              height: 0,
+                              padding: EdgeInsets.zero,
+                              child: Text('$val', style: TextStyle(fontSize: 15, color: Colors.white),)
+                          );
+                        }).toList()
                       ),
                       GridView.count(
                           shrinkWrap: true,
@@ -135,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       builder: (context) =>
                                           DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
                                 },
-                                color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                                color: widget.book == idx+39? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                                 minWidth: 0,
                                 height: 0,
                                 padding: EdgeInsets.zero,
@@ -178,7 +179,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           });
                           Navigator.pop(context);
                         },
-                        color: isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                        color: currentPage == val? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                         minWidth: 0,
                         height: 0,
                         padding: EdgeInsets.zero,
@@ -230,8 +231,8 @@ class _DetailScreenState extends State<DetailScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(widget.name, style: TextStyle(fontSize: 20, color: Colors.white),),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                Text(widget.name, style: TextStyle(fontSize: 18, color: Colors.white),),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
               ],
             ),
             onPressed: () => _showBookDialog(),
@@ -246,7 +247,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: <Widget>[
                   Text('${currentPage+1} 장',
                     style: TextStyle(fontSize: 18, color: Colors.white),),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
                 ],
               ),
                 onPressed: () => _showChapterDialog(),
@@ -260,7 +261,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: <Widget>[
                   Text('절',
                     style: TextStyle(fontSize: 18, color: Colors.white),),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white,),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
                 ],
               ),
               onPressed: () => _showVerseDialog(),
@@ -435,8 +436,7 @@ class _VerseListState extends State<VerseList> {
               return Container(
                 decoration: BoxDecoration(
                     border: Border(
-                        bottom:
-                        BorderSide(color: Colors.grey, width: 1))),
+                        bottom: BorderSide(color: Colors.grey, width: 1))),
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),

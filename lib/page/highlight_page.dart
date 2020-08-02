@@ -39,10 +39,10 @@ class HighlightList extends StatelessWidget {
             if (i <= 38) {
               //구약
               fullContent = korOldB[i] + " " + (j + 1).toString() + ":" + (k+1).toString();
-              bookName = korOldB[i];
+              bookName = korOldShortB[i];
             } else {
               fullContent = korNewB[i - 39] + " " + (j + 1).toString() + ":" + (k+1).toString();
-              bookName = korNewB[i - 39];
+              bookName = korNewShortB[i - 39];
             }
             fullContent += " " + korhkjv[i][j][k];
             HighlightInfo h = HighlightInfo(fullContent, bookName, i, j, k);
