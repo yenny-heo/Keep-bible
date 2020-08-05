@@ -113,7 +113,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     builder: (context) =>
                                         DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
                               },
-                              color: widget.book == idx? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                              color: widget.book == idx? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                               minWidth: 0,
                               height: 0,
                               padding: EdgeInsets.zero,
@@ -136,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       builder: (context) =>
                                           DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
                                 },
-                                color: widget.book == idx+39? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                                color: widget.book == idx+39? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                                 minWidth: 0,
                                 height: 0,
                                 padding: EdgeInsets.zero,
@@ -179,7 +179,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           });
                           Navigator.pop(context);
                         },
-                        color: currentPage == val? Color(0xff546fee) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
+                        color: currentPage == val? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                         minWidth: 0,
                         height: 0,
                         padding: EdgeInsets.zero,

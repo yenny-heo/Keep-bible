@@ -8,6 +8,8 @@ import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 
 String query = "";
+int option = 0;
+int totalSearch = 0;
 bool isDark = false;
 
 class SearchInfo {
@@ -41,19 +43,22 @@ class _SearchState extends State<SearchPage> {
       for (int i = 0; i < searchList.length; i++) {
         for (int j = 0; j < searchList[i].length; j++) {
           for (int k = 0; k < searchList[i][j].length; k++) {
-            String content, bookName;
-            int book = i,
-                chapter = j;
-            if (searchList[i][j][k].contains(query)) {
-              int verse = k;
-              if (i <= 38)
-                bookName = korOldShortB[i];
-              else
-                bookName = korNewShortB[i - 39];
-              content = bookName + (j + 1).toString() + ":" + (k + 1).toString() + " " + searchList[i][j][k];
-              SearchInfo s = SearchInfo(
-                  content, bookName, book, chapter, verse);
-              listData.add(s);
+            if(option == 0 || (option == 1 && i <= 38) || (option == 2 && i > 38) ||
+                (option >= 3 && i == option - 3)){//영역 필터링
+              String content, bookName;
+              int book = i,
+                  chapter = j;
+              if (searchList[i][j][k].contains(query)) {
+                int verse = k;
+                if (i <= 38)
+                  bookName = korOldShortB[i];
+                else
+                  bookName = korNewShortB[i - 39];
+                content = bookName + (j + 1).toString() + ":" + (k + 1).toString() + " " + searchList[i][j][k];
+                SearchInfo s = SearchInfo(content, bookName, book, chapter, verse);
+                totalSearch++;
+                listData.add(s);
+              }
             }
           }
         }
@@ -61,6 +66,9 @@ class _SearchState extends State<SearchPage> {
       setState(() {
         items.clear();
         items.addAll(listData);
+        if(listData.isNotEmpty) toast("총 $totalSearch개의 일치하는 절을 찾았습니다");
+        FocusScope.of(context).unfocus();
+        totalSearch = 0;
       });
       if (listData.isEmpty) {
         toast("일치하는 검색어가 없습니다");
@@ -75,8 +83,7 @@ class _SearchState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    isDark =
-        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
         appBar: AppBar(title: Text('검색')),
         body: Container(
@@ -128,6 +135,25 @@ class _SearchState extends State<SearchPage> {
                   ],
                 ),
               ),
+              DropdownButton<int>(
+                isExpanded: true,
+                value: option,
+                icon: Icon(Icons.arrow_drop_down),
+                iconSize: 30,
+                style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
+                onChanged: (int newOption){
+                  setState(() {
+                    option = newOption;
+                    filterSearchResults(query);
+                  });
+                },
+                items: searchOption.map((val){
+                  return DropdownMenuItem(
+                    value: searchOption.indexOf(val),
+                    child:Center(child: Text(val))
+                  );
+                }).toList()
+              ),
               Expanded(
                   child: Scrollbar(
                     child: ListView.builder(
@@ -137,12 +163,14 @@ class _SearchState extends State<SearchPage> {
                         return Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey, width: 1))
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: 1))
                             ),
                             child:
                             ListTile(
                               title: RichText(
-                                  text: searchMatch(items[idx].content, isDark)
+                                  text: searchMatch(
+                                      items[idx].content, isDark)
                               ),
                               onTap: () {
                                 Navigator.push(context,
