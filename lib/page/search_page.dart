@@ -8,6 +8,7 @@ import 'package:keep_bible_app/toast/toast.dart';
 import 'package:provider/provider.dart';
 
 String query = "";
+List queries = [];
 int option = 0;
 int totalSearch = 0;
 bool isDark = false;
@@ -37,6 +38,8 @@ class _SearchState extends State<SearchPage> {
   var items = List<SearchInfo>();
 
   void filterSearchResults(String query) {
+    queries = query.split(',');
+    print(queries);
     var searchList = korhkjv;
     if (query.isNotEmpty) {
       List<SearchInfo> listData = List<SearchInfo>();
@@ -46,9 +49,14 @@ class _SearchState extends State<SearchPage> {
             if(option == 0 || (option == 1 && i <= 38) || (option == 2 && i > 38) ||
                 (option >= 3 && i == option - 3)){//영역 필터링
               String content, bookName;
-              int book = i,
-                  chapter = j;
-              if (searchList[i][j][k].contains(query)) {
+              int book = i, chapter = j;
+              bool flag = false;
+              for(var q in queries){
+                if (!searchList[i][j][k].contains(q)) {//모든 키워드중 하나라도 포함돼있지 않으면 제외
+                  flag = true;
+                }
+              }
+              if(!flag){
                 int verse = k;
                 if (i <= 38)
                   bookName = korOldShortB[i];
@@ -106,7 +114,7 @@ class _SearchState extends State<SearchPage> {
                           },
                           decoration: InputDecoration(
                             labelText: "검색",
-                            hintText: "키워드로 검색하세요",
+                            hintText: "띄어쓰기 없이 쉼표로 검색어를 구분합니다.",
                             labelStyle: TextStyle(
                                 color: Colors.grey
                             ),
@@ -211,27 +219,34 @@ TextSpan searchMatch(String match, bool isDark) {
   if (query == "" || query == null) {
     return null;
   }
-  if (match.contains(query)) {
-    if (match.substring(0, query.length) == query) {
-      return TextSpan(
-          style: posRes(isDark),
-          text: match.substring(0, query.length),
-          children: [
-            searchMatch(match.substring(query.length), isDark)
-          ]
-      );
-    }
-    else {
-      return TextSpan(
-          style: negRes(isDark),
-          text: match.substring(0, match.indexOf(query)),
-          children: [
-            searchMatch(match.substring(match.indexOf(query)), isDark)
-          ]
-      );
+  bool flag = false;
+  bool flag2 = false;
+  for(String q in queries){
+    if(match.contains(q)){
+      flag = true;
+      if (match.substring(0, q.length) == q) {
+        flag2 = true;
+        return TextSpan(
+            style: posRes(isDark),
+            text: match.substring(0, q.length),
+            children: [
+              searchMatch(match.substring(q.length), isDark)
+            ]
+        );
+      }
+      else continue;
     }
   }
-  else {
+  if(flag == true && flag2 == false){//일치하는 검색어는 있지만 앞에 위치하지 않는 경우, 한칸씩 찾으며 검사
+    return TextSpan(
+        style: negRes(isDark),
+        text: match.substring(0, 1),
+        children: [
+          searchMatch(match.substring(1), isDark)
+        ]
+    );
+  }
+  if(flag == false){//일치하는 검색어가 전혀 없는 경우
     return TextSpan(
         style: negRes(isDark),
         text: match
