@@ -39,7 +39,6 @@ class _SearchState extends State<SearchPage> {
 
   void filterSearchResults(String query) {
     queries = query.split(',');
-    print(queries);
     var searchList = korhkjv;
     if (query.isNotEmpty) {
       List<SearchInfo> listData = List<SearchInfo>();
@@ -114,7 +113,7 @@ class _SearchState extends State<SearchPage> {
                           },
                           decoration: InputDecoration(
                             labelText: "검색",
-                            hintText: "띄어쓰기 없이 쉼표로 검색어를 구분합니다.",
+                            hintText: "검색",
                             labelStyle: TextStyle(
                                 color: Colors.grey
                             ),
@@ -142,6 +141,10 @@ class _SearchState extends State<SearchPage> {
                     )
                   ],
                 ),
+              ),
+              Text(
+                "띄어쓰기 없이 쉼표로 검색어를 구분합니다. ex)믿음,소망,사랑",
+                style: TextStyle(color: Colors.grey),
               ),
               DropdownButton<int>(
                 isExpanded: true,
@@ -177,8 +180,7 @@ class _SearchState extends State<SearchPage> {
                             child:
                             ListTile(
                               title: RichText(
-                                  text: searchMatch(
-                                      items[idx].content, isDark)
+                                  text: searchMatch(items[idx].content, isDark)
                               ),
                               onTap: () {
                                 Navigator.push(context,
@@ -252,4 +254,5 @@ TextSpan searchMatch(String match, bool isDark) {
         text: match
     );
   }
+  return null;
 }

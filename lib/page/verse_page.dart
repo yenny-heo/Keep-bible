@@ -7,6 +7,7 @@ import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
+import 'package:keep_bible_app/navigation/drawer.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
