@@ -53,15 +53,16 @@ class _DetailScreenState extends State<DetailScreen> {
 
     List bible = [];
     int bibleNum = 0;
-    if (selectedBible[0] == true) {
+    List selectedB = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBibleState();
+    if (selectedB[0] == true) {
       bible.add(korhkjv);
       bibleNum++;
     }
-    if (selectedBible[1] == true) {
+    if (selectedB[1] == true) {
       bible.add(engkjv);
       bibleNum++;
     }
-    if (selectedBible[2] == true) {
+    if (selectedB[2] == true) {
       bible.add(korhrv);
       bibleNum++;
     }
@@ -285,6 +286,7 @@ class _DetailScreenState extends State<DetailScreen> {
             )
           ],
         ),
+        drawer: NavDrawer(),
         body: GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
             if(details.velocity.pixelsPerSecond.dx>0 && currentPage > 0){

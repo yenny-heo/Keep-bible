@@ -26,13 +26,12 @@ class _BibleSelectionState extends State<BibleSelection>{
               activeColor: AppTheme.lightMode.primaryColor,
               onChanged: (val){
                 setState((){
-                  //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
                   if(selectedBible[0] == true && selectedBible[1] == false && selectedBible[2] == false)
                     {
                       toast("최소 하나 이상의 역본을 선택해야 합니다.");
                     }
                   else{
-                   // Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(0);
+                    Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(0);
                     writeSelectedBible(0);
                   }
                 });
@@ -46,13 +45,12 @@ class _BibleSelectionState extends State<BibleSelection>{
                 activeColor: AppTheme.lightMode.primaryColor,
                 onChanged: (val){
                   setState((){
-                    //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
                     if(selectedBible[0] == false && selectedBible[1] == true && selectedBible[2] == false)
                       {
                         toast("최소 하나 이상의 역본을 선택해야 합니다.");
                       }
                     else{
-                     // Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(1);
+                      Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(1);
                       writeSelectedBible(1);
                     }
                   });
@@ -66,13 +64,12 @@ class _BibleSelectionState extends State<BibleSelection>{
                 activeColor: AppTheme.lightMode.primaryColor,
                 onChanged: (val){
                   setState((){
-                    //List sb = Provider.of<AppStateNotifier>(context, listen: false).getSelectedBible();
                     if(selectedBible[0] == false && selectedBible[1] == false && selectedBible[2] == true)
                     {
                       toast("최소 하나 이상의 역본을 선택해야 합니다.");
                     }
                     else{
-                      // Provider.of<AppStateNotifier>(context, listen: false).setSelectedBible(1);
+                       Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(2);
                       writeSelectedBible(2);
                     }
                   });
