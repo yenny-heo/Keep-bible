@@ -101,7 +101,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: Scaffold(
                   body: TabBarView(
                     children: <Widget>[
-                      GridView.count(
+                      GridView.count(//구약
                         shrinkWrap: true,
                         crossAxisCount: 3,
                         crossAxisSpacing: 10,
@@ -112,7 +112,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               onPressed: (){
                                 Navigator.pop(context);//popup 창 삭제
                                 Navigator.pop(context);//현재 켜진 창 삭제
-                                if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length-1);//이후 앞으로가기 기록 삭제
+                                if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length);//이후 앞으로가기 기록 삭제
                                 verseHistory.add(VerseHistory(val, idx, 0, widget.idx+1));
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) =>
@@ -126,7 +126,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           );
                         }).toList()
                       ),
-                      GridView.count(
+                      GridView.count(//신약
                           shrinkWrap: true,
                           crossAxisCount: 3,
                           crossAxisSpacing: 10,
@@ -137,7 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 onPressed: (){
                                   Navigator.pop(context);//popup 창 삭제
                                   Navigator.pop(context);//현재 켜진 창 삭제
-                                  if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length-1);//이후 앞으로가기 기록 삭제
+                                  if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length);//이후 앞으로가기 기록 삭제
                                   verseHistory.add(VerseHistory(val, idx+39, 0, widget.idx+1));
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
@@ -315,7 +315,45 @@ class _DetailScreenState extends State<DetailScreen> {
                 verse: widget.verse,
                 selected: List.generate(bible[0][widget.book][currentPage].length,
                         (i) => List.generate(bibleNum, (index) => false)))
-        )
+        ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Visibility(
+            visible: widget.idx>0 ? true:false,
+            child: FloatingActionButton(
+              heroTag: "undo",
+              child: Icon(Icons.undo),
+              backgroundColor: isDark? Colors.white70:Colors.black54,
+              onPressed: () {
+                var undo = verseHistory[widget.idx-1];
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => DetailScreen(name:undo.bookName, book: undo.book, chapter: undo.chapter, verse: 0, idx:widget.idx-1)
+                ));
+              },
+            )
+          ),
+          Visibility(
+            visible: widget.idx<verseHistory.length-1 ? true:false,
+            child: FloatingActionButton(
+              heroTag: "redo",
+              child: Icon(Icons.redo),
+              backgroundColor: isDark? Colors.white70:Colors.black54,
+              onPressed: () {
+                var redo = verseHistory[widget.idx+1];
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => DetailScreen(name:redo.bookName, book: redo.book, chapter: redo.chapter, verse: 0, idx:widget.idx+1)
+                ));
+
+              },
+            )
+          )
+        ],
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerFloat,
     );
   }
 }

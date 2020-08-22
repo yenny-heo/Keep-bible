@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/page/verse_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -183,6 +184,8 @@ class _SearchState extends State<SearchPage> {
                                   text: searchMatch(items[idx].content, isDark)
                               ),
                               onTap: () {
+                                var len = verseHistory.length;
+                                verseHistory.add(VerseHistory(items[idx].bookName, items[idx].book, items[idx].chapter, len));
                                 Navigator.push(context,
                                     MaterialPageRoute(
                                         builder: (context) =>
@@ -190,7 +193,8 @@ class _SearchState extends State<SearchPage> {
                                                 name: items[idx].bookName,
                                                 book: items[idx].book,
                                                 chapter: items[idx].chapter,
-                                                verse: items[idx].verse)));
+                                                verse: items[idx].verse,
+                                                idx: len)));
                               },
                             )
                         );
