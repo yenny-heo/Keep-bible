@@ -5,7 +5,7 @@ import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
-import 'package:keep_bible_app/local_storage/selected_bibles.dart';
+import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
@@ -23,8 +23,9 @@ class DetailScreen extends StatefulWidget {
   final int book;
   int chapter;
   int verse;
+  int idx;
 
-  DetailScreen({Key key, this.name, this.book, this.chapter, this.verse}) : super(key: key);
+  DetailScreen({Key key, this.name, this.book, this.chapter, this.verse, this.idx}) : super(key: key);
 
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -111,9 +112,11 @@ class _DetailScreenState extends State<DetailScreen> {
                               onPressed: (){
                                 Navigator.pop(context);//popup 창 삭제
                                 Navigator.pop(context);//현재 켜진 창 삭제
+                                if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length-1);//이후 앞으로가기 기록 삭제
+                                verseHistory.add(VerseHistory(val, idx, 0, widget.idx+1));
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) =>
-                                        DetailScreen(name: val, book: idx, chapter: 0, verse: 0)));
+                                        DetailScreen(name: val, book: idx, chapter: 0, verse: 0, idx: widget.idx+1)));
                               },
                               color: widget.book == idx? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                               minWidth: 0,
@@ -134,9 +137,11 @@ class _DetailScreenState extends State<DetailScreen> {
                                 onPressed: (){
                                   Navigator.pop(context);//popup 창 삭제
                                   Navigator.pop(context);//현재 켜진 창 삭제
+                                  if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length-1);//이후 앞으로가기 기록 삭제
+                                  verseHistory.add(VerseHistory(val, idx+39, 0, widget.idx+1));
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
-                                          DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0)));
+                                          DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0, idx: widget.idx + 1)));
                                 },
                                 color: widget.book == idx+39? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                                 minWidth: 0,

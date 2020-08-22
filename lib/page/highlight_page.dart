@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
+import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +68,8 @@ class HighlightList extends StatelessWidget {
                                 color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
                             )),
                     onTap: () {
+                      var len = verseHistory.length;
+                      verseHistory.add(VerseHistory(highlightList[i].bookName, highlightList[i].book, highlightList[i].chapter, len));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -74,7 +77,8 @@ class HighlightList extends StatelessWidget {
                                   name: highlightList[i].bookName,
                                   book: highlightList[i].book,
                                   chapter: highlightList[i].chapter,
-                                  verse: highlightList[i].verse)));
+                                  verse: highlightList[i].verse,
+                                  idx: len)));
                     },
                   ));
             }));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -38,11 +39,13 @@ class OldBibleList extends StatelessWidget {
                                   ? AppTheme.darkMode.accentColor
                                   : AppTheme.lightMode.accentColor))),
                   onTap: () {
+                    var len = verseHistory.length;
+                    verseHistory.add(VerseHistory(korOldShortB[i], i, 0, len));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreen(name: korOldShortB[i], book: i, chapter: 0, verse: 0,)));
+                                DetailScreen(name: korOldShortB[i], book: i, chapter: 0, verse: 0, idx:len)));
                   },
                 ));
           }),

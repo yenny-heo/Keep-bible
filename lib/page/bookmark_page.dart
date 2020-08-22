@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/bookmarks.dart';
 import 'package:keep_bible_app/data/title.dart';
+import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,8 @@ class BookmarkList extends StatelessWidget {
                               color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
                             ))),
                     onTap: () {
+                      var len = verseHistory.length;
+                      verseHistory.add(VerseHistory(bookmarkList[i].bookName, bookmarkList[i].book, bookmarkList[i].chapter, len));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -70,7 +73,8 @@ class BookmarkList extends StatelessWidget {
                                   name: bookmarkList[i].bookName,
                                   book: bookmarkList[i].book,
                                   chapter: bookmarkList[i].chapter,
-                                  verse: 0)));
+                                  verse: 0,
+                                  idx: len)));
                     },
                   ));
             }));
