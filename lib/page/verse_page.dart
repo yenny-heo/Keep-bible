@@ -184,6 +184,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 ? bookMarkIcon = Icons.bookmark
                                 : bookMarkIcon = Icons.bookmark_border;
                           });
+                          verseHistory[widget.idx].chapter = val;
                           Navigator.pop(context);
                         },
                         color: currentPage == val? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
@@ -298,12 +299,14 @@ class _DetailScreenState extends State<DetailScreen> {
               setState(() {
                 currentPage -= 1;
                 _scrollController.jumpTo(index: 0);
+                verseHistory[widget.idx].chapter = currentPage;
               });
             }
             else if(details.velocity.pixelsPerSecond.dx<0 && currentPage < bible[0][widget.book].length - 1){
               setState(() {
                 currentPage += 1;
                 _scrollController.jumpTo(index: 0);
+                verseHistory[widget.idx].chapter = currentPage;
               });
             }
           },
