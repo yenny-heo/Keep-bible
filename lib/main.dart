@@ -13,9 +13,6 @@ import 'page/old_bible_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  readSelectedBible().then((List s){
-    setSelectedBible(s);
-  });
   readBookmark().then((List b){
     setBookmark(b);
   });
@@ -33,6 +30,10 @@ class MyApp extends StatelessWidget {
     readMode().then((bool m){
       setMode(m);
       Provider.of<AppStateNotifier>(context, listen: false).setModeState(isLightOrDark[1]);
+    });
+    readSelectedBible().then((List s){
+      setSelectedBible(s);
+      Provider.of<AppStateNotifier>(context, listen: false).initSelectedBibleState(s);
     });
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
       return MaterialApp(
