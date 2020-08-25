@@ -329,7 +329,9 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Icon(Icons.undo),
               backgroundColor: isDark? Colors.white70:Colors.black54,
               onPressed: () {
-                var undo = verseHistory[widget.idx-1];
+                var undo;
+                if(widget.idx-1 < verseHistory.length) undo = verseHistory[widget.idx-1];
+                else undo = verseHistory[verseHistory.length-1];
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => DetailScreen(name:undo.bookName, book: undo.book, chapter: undo.chapter, verse: 0, idx:widget.idx-1)
@@ -344,7 +346,9 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Icon(Icons.redo),
               backgroundColor: isDark? Colors.white70:Colors.black54,
               onPressed: () {
-                var redo = verseHistory[widget.idx+1];
+                var redo;
+                if(widget.idx+1 < verseHistory.length) redo = verseHistory[widget.idx+1];
+                else redo = verseHistory[verseHistory.length-1];
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => DetailScreen(name:redo.bookName, book: redo.book, chapter: redo.chapter, verse: 0, idx:widget.idx+1)
