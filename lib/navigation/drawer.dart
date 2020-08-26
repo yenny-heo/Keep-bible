@@ -3,7 +3,7 @@ import 'package:keep_bible_app/local_storage/day_night_mode.dart';
 import 'package:keep_bible_app/page/bible_selection_page.dart';
 import 'package:keep_bible_app/page/bookmark_page.dart';
 import 'package:keep_bible_app/page/highlight_page.dart';
-import 'package:keep_bible_app/page/info_page.dart';
+import 'package:keep_bible_app/page/setting_page.dart';
 import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -35,41 +35,6 @@ class _NavDrawerState extends State<NavDrawer> {
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                _menuIcon(Icons.brightness_4, isDark),
-                _menuText('모드', isDark),
-              ],
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: ToggleButtons(
-                  children: <Widget>[
-                    Icon(Icons.wb_sunny),
-                    Icon(Icons.brightness_2)
-                  ],
-                  onPressed: (int i) {
-                    setState(() {
-                      isLightOrDark[0] = !isLightOrDark[0];
-                      isLightOrDark[1] = !isLightOrDark[1];
-                      Provider.of<AppStateNotifier>(context, listen: false)
-                          .setModeState(isLightOrDark[1]);
-                      writeMode(isLightOrDark[1]);
-                    });
-                  },
-                  isSelected: isLightOrDark,
-                  color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor,
-                  selectedBorderColor: Colors.black26,
-                  disabledBorderColor: Colors.black26,
-                  borderColor: Colors.black26,
-                  selectedColor: AppTheme.lightMode.primaryColor,
-
-                ))
-          ],
-        ),
         InkWell(
           child: Row(
             children: <Widget>[
@@ -121,13 +86,13 @@ class _NavDrawerState extends State<NavDrawer> {
         InkWell(
           child: Row(
             children: <Widget>[
-              _menuIcon(Icons.info_outline, isDark),
-              _menuText('앱 정보', isDark),
+              _menuIcon(Icons.settings, isDark),
+              _menuText('설정', isDark),
             ],
           ),
           onTap: () => {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => InfoPage()))
+                MaterialPageRoute(builder: (context) => SettingPage()))
           },
         ),
       ],

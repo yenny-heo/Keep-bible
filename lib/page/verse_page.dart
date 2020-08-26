@@ -475,7 +475,7 @@ class _VerseListState extends State<VerseList> {
                   InkWell(
                     child: Container(
                       padding: EdgeInsets.all(12.0),
-                      child:  Text("밑줄긋기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
+                      child:  Text("밑줄 긋기",style: TextStyle(fontSize: 20, color: isDark ? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor)),
                     ),
                     onTap: () => _setHighlight(),
                   ),
