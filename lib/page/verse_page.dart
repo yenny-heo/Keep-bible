@@ -396,6 +396,7 @@ class _VerseListState extends State<VerseList> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    double _fontSize = Provider.of<AppStateNotifier>(context, listen: false).getFontSizeState();
     Color highlightColor = isDark ? Colors.white38 : Color(0xffeeca54);
     ThemeData mode;
     List selectedColors;
@@ -521,7 +522,7 @@ class _VerseListState extends State<VerseList> {
                           title: Text(
                             "${i+1}. ${widget.bible[j][widget.book][widget.chapter][i]}",
                             style: TextStyle(
-                                fontSize: 22,
+                                fontSize: _fontSize,
                                 color: widget.selected[i][j]
                                     ? selectedColors[j]
                                     : unSelectedColors[j],

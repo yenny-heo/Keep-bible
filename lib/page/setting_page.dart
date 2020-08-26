@@ -10,10 +10,10 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  double fontSize = 21;
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    double fontSize = Provider.of<AppStateNotifier>(context, listen: false).getFontSizeState();
     return Scaffold(
       appBar: AppBar(title: Text('설정')),
       body: ListView(
@@ -75,6 +75,7 @@ class _SettingPageState extends State<SettingPage> {
                       divisions: 4,
                       onChanged: (double val){
                         setState(() {
+                          Provider.of<AppStateNotifier>(context, listen: false).setFontSizeState(val);
                           fontSize = val;
                         });
                       },
