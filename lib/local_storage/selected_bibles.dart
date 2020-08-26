@@ -37,6 +37,5 @@ void setSelectedBible(List s){
   s = s.cast<bool>();
   for(int i=0; i<s.length; i++){
     selectedBible[i] = s[i];
-    print(s[i]);
   }
 }

@@ -3,6 +3,7 @@ import 'package:keep_bible_app/local_storage/day_night_mode.dart';
 import 'package:keep_bible_app/page/bible_selection_page.dart';
 import 'package:keep_bible_app/page/bookmark_page.dart';
 import 'package:keep_bible_app/page/highlight_page.dart';
+import 'package:keep_bible_app/page/info_page.dart';
 import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -116,7 +117,19 @@ class _NavDrawerState extends State<NavDrawer> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => SearchPage()))
           },
-        )
+        ),
+        InkWell(
+          child: Row(
+            children: <Widget>[
+              _menuIcon(Icons.info_outline, isDark),
+              _menuText('앱 정보', isDark),
+            ],
+          ),
+          onTap: () => {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => InfoPage()))
+          },
+        ),
       ],
     ));
   }
