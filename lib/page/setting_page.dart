@@ -10,7 +10,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  double fontSize = 20;
+  double fontSize = 21;
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
@@ -21,37 +21,42 @@ class _SettingPageState extends State<SettingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _menuText('테마 설정', isDark),
+              _menuText('테마 설정', isDark, 20),
               Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: ToggleButtons(
-                    children: <Widget>[
-                      Icon(Icons.wb_sunny),
-                      Icon(Icons.brightness_2)
-                    ],
-                    onPressed: (int i) {
-                      setState(() {
-                        isLightOrDark[0] = !isLightOrDark[0];
-                        isLightOrDark[1] = !isLightOrDark[1];
-                        Provider.of<AppStateNotifier>(context, listen: false)
-                            .setModeState(isLightOrDark[1]);
-                        writeMode(isLightOrDark[1]);
-                      });
-                    },
-                    isSelected: isLightOrDark,
-                    color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor,
-                    selectedBorderColor: Colors.black26,
-                    disabledBorderColor: Colors.black26,
-                    borderColor: Colors.black26,
-                    selectedColor: AppTheme.lightMode.primaryColor,
-
-                  ))
+                  child: ToggleButtonsTheme(
+                    data: ToggleButtonsTheme.of(context).copyWith(
+                      color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor,
+                      selectedBorderColor: Colors.black26,
+                      disabledBorderColor: Colors.black26,
+                      borderColor: Colors.black26,
+                      selectedColor: AppTheme.lightMode.primaryColor,
+                      fillColor: Color(0xff33546fee),
+                    ),
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Icon(Icons.wb_sunny),
+                        Icon(Icons.brightness_2)
+                      ],
+                      onPressed: (int i) {
+                        setState(() {
+                          isLightOrDark[0] = !isLightOrDark[0];
+                          isLightOrDark[1] = !isLightOrDark[1];
+                          Provider.of<AppStateNotifier>(context, listen: false)
+                              .setModeState(isLightOrDark[1]);
+                          writeMode(isLightOrDark[1]);
+                        });
+                      },
+                      isSelected: isLightOrDark,
+                    )
+                  )
+              )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _menuText('글자 크기', isDark),
+              _menuText('글자 크기', isDark, 20),
               Row(
                 children: <Widget>[
                   _Stext('A', isDark, 15),
@@ -79,17 +84,28 @@ class _SettingPageState extends State<SettingPage> {
                 ],
               ),
             ],
+          ),
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            width: 100,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
+              ),
+            ),
+            child: _menuText('처음에 하나님께서 하늘과 땅을 창조하시니라.\nIn the beginning God created the heaven and the earth.', isDark, fontSize),
           )
         ],
       )
     );
   }
 }
-Container _menuText(String text, bool isDark) {
+Container _menuText(String text, bool isDark, double size) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
     child: Text(text, style: TextStyle(
-        fontSize: 20,
+        fontSize: size,
         color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
     )),
   );
