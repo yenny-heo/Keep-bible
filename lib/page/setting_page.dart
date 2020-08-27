@@ -59,7 +59,7 @@ class _SettingPageState extends State<SettingPage> {
               _menuText('글자 크기', isDark, 20),
               Row(
                 children: <Widget>[
-                  _Stext('A', isDark, 15),
+                  _stext('A', isDark, 15),
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       thumbColor: Color(0xff546fee),
@@ -82,7 +82,7 @@ class _SettingPageState extends State<SettingPage> {
                       },
                     ),
                   ),
-                  _Btext('A', isDark, 27),
+                  _btext('A', isDark, 27),
                 ],
               ),
             ],
@@ -113,20 +113,22 @@ Container _menuText(String text, bool isDark, double size) {
   );
 }
 
-Container _Stext(String text, bool isDark, double size) {
+Container _stext(String text, bool isDark, double size) {
   return Container(
     child: Text(text, style: TextStyle(
         fontSize: size,
+        fontWeight: FontWeight.bold,
         color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
     )),
   );
 }
 
-Container _Btext(String text, bool isDark, double size) {
+Container _btext(String text, bool isDark, double size) {
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
     child: Text(text, style: TextStyle(
         fontSize: size,
+        fontWeight: FontWeight.bold,
         color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
     )),
   );

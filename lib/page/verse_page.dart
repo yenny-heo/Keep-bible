@@ -397,7 +397,7 @@ class _VerseListState extends State<VerseList> {
   Widget build(BuildContext context) {
     bool isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     double _fontSize = Provider.of<AppStateNotifier>(context, listen: false).getFontSizeState();
-    Color highlightColor = isDark ? Colors.white38 : Color(0xffeeca54);
+    Color highlightColor = isDark ? Colors.white38 : Color(0xffCCeeca54);
     ThemeData mode;
     List selectedColors;
     List unSelectedColors;

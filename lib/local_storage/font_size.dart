@@ -24,7 +24,6 @@ Future<double> readFontSize() async {
     final file = await _localFile;
     // Read the file.
     String contents = await file.readAsString();
-    print(contents);
     return double.parse(contents);
   } catch (e) {
     // If encountering an error, return 0.
