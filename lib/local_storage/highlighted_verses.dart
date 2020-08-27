@@ -26,7 +26,6 @@ Future<List> readHighlight() async {
     final file = await _localFile;
     // Read the file.
     String contents = await file.readAsString();
-
     return json.decode(contents);
   } catch (e) {
     // If encountering an error, return 0.

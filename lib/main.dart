@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/local_storage/font_size.dart';
 import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/selected_bibles.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
@@ -28,12 +29,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     readMode().then((bool m){
-      setMode(m);
+      setMode(m);//initialize
       Provider.of<AppStateNotifier>(context, listen: false).setModeState(isLightOrDark[1]);
     });
     readSelectedBible().then((List s){
-      setSelectedBible(s);
+      setSelectedBible(s);//initialize
       Provider.of<AppStateNotifier>(context, listen: false).initSelectedBibleState(s);
+    });
+    readFontSize().then((double s){
+      setFontSize(s);
+      Provider.of<AppStateNotifier>(context, listen: false).initFontSizeState(s);
     });
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
       return MaterialApp(

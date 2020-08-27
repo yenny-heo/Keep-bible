@@ -32,7 +32,7 @@ class _BibleSelectionState extends State<BibleSelection>{
                     }
                   else{
                     Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(0);
-                    writeSelectedBible(0);
+                    writeSelectedBible(0);//save in local storage
                   }
                 });
               },
@@ -51,7 +51,7 @@ class _BibleSelectionState extends State<BibleSelection>{
                       }
                     else{
                       Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(1);
-                      writeSelectedBible(1);
+                      writeSelectedBible(1);//save in local storage
                     }
                   });
                 },
@@ -70,7 +70,7 @@ class _BibleSelectionState extends State<BibleSelection>{
                     }
                     else{
                        Provider.of<AppStateNotifier>(context, listen: false).setSelectedBibleState(2);
-                      writeSelectedBible(2);
+                      writeSelectedBible(2);//save in local storage
                     }
                   });
                 },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_bible_app/local_storage/day_night_mode.dart';
+import 'package:keep_bible_app/local_storage/font_size.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +43,8 @@ class _SettingPageState extends State<SettingPage> {
                         setState(() {
                           isLightOrDark[0] = !isLightOrDark[0];
                           isLightOrDark[1] = !isLightOrDark[1];
-                          Provider.of<AppStateNotifier>(context, listen: false)
-                              .setModeState(isLightOrDark[1]);
-                          writeMode(isLightOrDark[1]);
+                          Provider.of<AppStateNotifier>(context, listen: false).setModeState(isLightOrDark[1]);
+                          writeMode(isLightOrDark[1]);//save in local storage
                         });
                       },
                       isSelected: isLightOrDark,
@@ -76,6 +76,7 @@ class _SettingPageState extends State<SettingPage> {
                       onChanged: (double val){
                         setState(() {
                           Provider.of<AppStateNotifier>(context, listen: false).setFontSizeState(val);
+                          writeFontSize(val);//save in local storage
                           fontSize = val;
                         });
                       },
