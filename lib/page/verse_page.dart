@@ -8,6 +8,7 @@ import 'package:keep_bible_app/local_storage/highlighted_verses.dart';
 import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/navigation/bottom_bar.dart';
 import 'package:keep_bible_app/navigation/drawer.dart';
+import 'package:keep_bible_app/page/search_page.dart';
 import 'package:keep_bible_app/state/app_state_notifier.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:keep_bible_app/theme/app_theme.dart';
@@ -235,9 +236,12 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => {Navigator.push(context,  MaterialPageRoute(builder: (context) => SearchPage()))},
+          ),
           title:MaterialButton(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(widget.name, style: TextStyle(fontSize: 18, color: Colors.white),),
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
@@ -292,7 +296,6 @@ class _DetailScreenState extends State<DetailScreen> {
             )
           ],
         ),
-        drawer: NavDrawer(),
         body: GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
             if(details.velocity.pixelsPerSecond.dx>0 && currentPage > 0){
