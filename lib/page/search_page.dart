@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:keep_bible_app/data/engkjv.dart';
 import 'package:keep_bible_app/data/korhkjv.dart';
+import 'package:keep_bible_app/data/korhrv.dart';
 import 'package:keep_bible_app/data/title.dart';
 import 'package:keep_bible_app/local_storage/verse_history.dart';
 import 'package:keep_bible_app/page/verse_page.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 
 String query = "";
 List queries = [];
+int bibleOption = 0;
 int option = 0;
 int totalSearch = 0;
 bool isDark = false;
@@ -40,7 +43,12 @@ class _SearchState extends State<SearchPage> {
 
   void filterSearchResults(String query) {
     queries = query.split(',');
+
+    //bible 선택에 따라 변경
     var searchList = korhkjv;
+    if(bibleOption == 1) searchList = engkjv;
+    else if(bibleOption == 2) searchList = korhrv;
+
     if (query.isNotEmpty) {
       List<SearchInfo> listData = List<SearchInfo>();
       for (int i = 0; i < searchList.length; i++) {
@@ -147,24 +155,46 @@ class _SearchState extends State<SearchPage> {
                 "띄어쓰기 없이 쉼표로 검색어를 구분합니다. ex)믿음,소망,사랑",
                 style: TextStyle(color: Colors.grey),
               ),
-              DropdownButton<int>(
-                isExpanded: true,
-                value: option,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 30,
-                style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
-                onChanged: (int newOption){
-                  setState(() {
-                    option = newOption;
-                    filterSearchResults(query);
-                  });
-                },
-                items: searchOption.map((val){
-                  return DropdownMenuItem(
-                    value: searchOption.indexOf(val),
-                    child:Center(child: Text(val))
-                  );
-                }).toList()
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  DropdownButton<int>(
+                    value: bibleOption,
+                    icon: Icon(Icons.arrow_drop_down),
+                    iconSize: 30,
+                    style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
+                    onChanged: (int newOption){
+                      setState(() {
+                        bibleOption = newOption;
+                        filterSearchResults(query);
+                      });
+                    },
+                    items: searchBibleOption.map((val){
+                      return DropdownMenuItem(
+                        value: searchBibleOption.indexOf(val),
+                        child: Center(child: Text(val)),
+                      );
+                    }).toList(),
+                  ),
+                  DropdownButton<int>(
+                      value: option,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 30,
+                      style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
+                      onChanged: (int newOption){
+                        setState(() {
+                          option = newOption;
+                          filterSearchResults(query);
+                        });
+                      },
+                      items: searchOption.map((val){
+                        return DropdownMenuItem(
+                            value: searchOption.indexOf(val),
+                            child:Center(child: Text(val))
+                        );
+                      }).toList()
+                  ),
+                ],
               ),
               Expanded(
                   child: Scrollbar(

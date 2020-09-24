@@ -22,7 +22,7 @@ class _SettingPageState extends State<SettingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _menuText('테마 설정', isDark, 20),
+              _menuText('테마', isDark, 20),
               Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: ToggleButtonsTheme(
