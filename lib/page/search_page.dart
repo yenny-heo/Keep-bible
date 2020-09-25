@@ -158,41 +158,49 @@ class _SearchState extends State<SearchPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  DropdownButton<int>(
-                    value: bibleOption,
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 30,
-                    style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
-                    onChanged: (int newOption){
-                      setState(() {
-                        bibleOption = newOption;
-                        filterSearchResults(query);
-                      });
-                    },
-                    items: searchBibleOption.map((val){
-                      return DropdownMenuItem(
-                        value: searchBibleOption.indexOf(val),
-                        child: Center(child: Text(val)),
-                      );
-                    }).toList(),
-                  ),
-                  DropdownButton<int>(
-                      value: option,
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.5,
+                    child: DropdownButton<int>(
+                      isExpanded: true,
+                      value: bibleOption,
                       icon: Icon(Icons.arrow_drop_down),
                       iconSize: 30,
                       style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
                       onChanged: (int newOption){
                         setState(() {
-                          option = newOption;
+                          bibleOption = newOption;
                           filterSearchResults(query);
                         });
                       },
-                      items: searchOption.map((val){
+                      items: searchBibleOption.map((val){
                         return DropdownMenuItem(
-                            value: searchOption.indexOf(val),
-                            child:Center(child: Text(val))
+                          value: searchBibleOption.indexOf(val),
+                          child: Center(child: Text(val)),
                         );
-                      }).toList()
+                      }).toList(),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.4,
+                    child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: option,
+                        icon: Icon(Icons.arrow_drop_down),
+                        iconSize: 30,
+                        style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
+                        onChanged: (int newOption){
+                          setState(() {
+                            option = newOption;
+                            filterSearchResults(query);
+                          });
+                        },
+                        items: searchOption.map((val){
+                          return DropdownMenuItem(
+                              value: searchOption.indexOf(val),
+                              child:Center(child: Text(val))
+                          );
+                        }).toList()
+                    ),
                   ),
                 ],
               ),

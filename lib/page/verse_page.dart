@@ -242,6 +242,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
           title:MaterialButton(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(widget.name, style: TextStyle(fontSize: 18, color: Colors.white),),
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
