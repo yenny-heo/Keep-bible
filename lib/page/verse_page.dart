@@ -108,16 +108,16 @@ class _DetailScreenState extends State<DetailScreen> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                         childAspectRatio: 2,
-                        children: korOldShortB.mapIndex((val, idx){
+                        children: korOldMidB.mapIndex((val, idx){
                           return MaterialButton(
                               onPressed: (){
                                 Navigator.pop(context);//popup 창 삭제
                                 Navigator.pop(context);//현재 켜진 창 삭제
                                 if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length);//이후 앞으로가기 기록 삭제
-                                verseHistory.add(VerseHistory(val, idx, 0, widget.idx+1));
+                                verseHistory.add(VerseHistory(korOldShortB[idx], idx, 0, widget.idx+1));
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) =>
-                                        DetailScreen(name: val, book: idx, chapter: 0, verse: 0, idx: widget.idx+1)));
+                                        DetailScreen(name: korOldShortB[idx], book: idx, chapter: 0, verse: 0, idx: widget.idx+1)));
                               },
                               color: widget.book == idx? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                               minWidth: 0,
@@ -133,16 +133,16 @@ class _DetailScreenState extends State<DetailScreen> {
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           childAspectRatio: 2,
-                          children: korNewShortB.mapIndex((val, idx){
+                          children: korNewMidB.mapIndex((val, idx){
                             return MaterialButton(
                                 onPressed: (){
                                   Navigator.pop(context);//popup 창 삭제
                                   Navigator.pop(context);//현재 켜진 창 삭제
                                   if(verseHistory.length-1 > widget.idx)  verseHistory.removeRange(widget.idx+1, verseHistory.length);//이후 앞으로가기 기록 삭제
-                                  verseHistory.add(VerseHistory(val, idx+39, 0, widget.idx+1));
+                                  verseHistory.add(VerseHistory(korNewShortB[idx], idx+39, 0, widget.idx+1));
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
-                                          DetailScreen(name: val, book: idx+39, chapter: 0, verse: 0, idx: widget.idx + 1)));
+                                          DetailScreen(name: korNewShortB[idx], book: idx+39, chapter: 0, verse: 0, idx: widget.idx + 1)));
                                 },
                                 color: widget.book == idx+39? Color(0xff0321ab) : isDark? AppTheme.darkMode.focusColor: AppTheme.lightMode.focusColor,
                                 minWidth: 0,
@@ -236,16 +236,12 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () => {Navigator.push(context,  MaterialPageRoute(builder: (context) => SearchPage()))},
-          ),
           title:MaterialButton(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(widget.name, style: TextStyle(fontSize: 18, color: Colors.white),),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
+                Text(widget.name, style: TextStyle(fontSize: 16, color: Colors.white),),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 15,),
               ],
             ),
             onPressed: () => _showBookDialog(),
@@ -259,8 +255,8 @@ class _DetailScreenState extends State<DetailScreen> {
               child:Row(
                 children: <Widget>[
                   Text('${currentPage+1} 장',
-                    style: TextStyle(fontSize: 18, color: Colors.white),),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
+                    style: TextStyle(fontSize: 15, color: Colors.white),),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 15,),
                 ],
               ),
                 onPressed: () => _showChapterDialog(),
@@ -268,13 +264,13 @@ class _DetailScreenState extends State<DetailScreen> {
             MaterialButton(
               minWidth: 50,
               height: 10,
-              padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               clipBehavior: Clip.antiAlias,
               child:Row(
                 children: <Widget>[
                   Text('절',
-                    style: TextStyle(fontSize: 18, color: Colors.white),),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 20,),
+                    style: TextStyle(fontSize: 15, color: Colors.white),),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 15,),
                 ],
               ),
               onPressed: () => _showVerseDialog(),
@@ -294,9 +290,14 @@ class _DetailScreenState extends State<DetailScreen> {
               selectedBorderColor: isDark
                   ? AppTheme.darkMode.primaryColor
                   : AppTheme.lightMode.primaryColor,
-            )
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => {Navigator.push(context,  MaterialPageRoute(builder: (context) => SearchPage()))},
+            ),
           ],
         ),
+        drawer: NavDrawer(),
         body: GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
             if(details.velocity.pixelsPerSecond.dx>0 && currentPage > 0){
