@@ -11,7 +11,7 @@ class AppTheme {
 
   static final ThemeData lightMode = ThemeData(
     scaffoldBackgroundColor: Colors.white,
-    accentColor: Colors.black,
+    hintColor: Colors.black,
     primaryColor: Color(0xff546fee),
     canvasColor: Colors.white,
     dialogBackgroundColor: Colors.white,
@@ -22,7 +22,7 @@ class AppTheme {
 
   static final ThemeData darkMode = ThemeData(
     scaffoldBackgroundColor: Color(0xff3b3b3b),
-    accentColor: Colors.white,
+    hintColor: Colors.white,
     primaryColor: Color(0xff303030),
     canvasColor: Color(0xff3b3b3b),//drawer background
     dialogBackgroundColor: Color(0xff303030),

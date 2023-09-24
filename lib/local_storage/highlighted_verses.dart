@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:path_provider/path_provider.dart';
 
-var highlights = List();
+var highlights = <dynamic>[];
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -21,7 +21,7 @@ Future<File> writeHighlight(List highlights) async {
   return file.writeAsString('$highlights');
 }
 
-Future<List> readHighlight() async {
+Future<List?> readHighlight() async {
   try {
     final file = await _localFile;
     // Read the file.
@@ -46,7 +46,7 @@ void _initHighlights() {
   }
 }
 
-void setHighlight(List highlight){
+void setHighlight(List? highlight){
   if(highlight != null && highlight.length == 66) {
     highlights = highlight;
   }

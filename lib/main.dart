@@ -14,10 +14,10 @@ import 'page/old_bible_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  readBookmark().then((List b){
+  readBookmark().then((List? b) {
     setBookmark(b);
   });
-  readHighlight().then((List h){
+  readHighlight().then((List? h) {
     setHighlight(h);
   });
   runApp(ChangeNotifierProvider<AppStateNotifier>(
@@ -28,17 +28,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    readMode().then((bool m){
-      setMode(m);//initialize
-      Provider.of<AppStateNotifier>(context, listen: false).setModeState(isLightOrDark[1]);
+    readMode().then((bool m) {
+      setMode(m); //initialize
+      Provider.of<AppStateNotifier>(context, listen: false)
+          .setModeState(isLightOrDark[1]);
     });
-    readSelectedBible().then((List s){
-      setSelectedBible(s);//initialize
-      Provider.of<AppStateNotifier>(context, listen: false).initSelectedBibleState(s);
+    readSelectedBible().then((List s) {
+      setSelectedBible(s); //initialize
+      Provider.of<AppStateNotifier>(context, listen: false)
+          .initSelectedBibleState(s);
     });
-    readFontSize().then((double s){
+    readFontSize().then((double s) {
       setFontSize(s);
-      Provider.of<AppStateNotifier>(context, listen: false).initFontSizeState(s);
+      Provider.of<AppStateNotifier>(context, listen: false)
+          .initFontSizeState(s);
     });
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
       return MaterialApp(
@@ -48,7 +51,11 @@ class MyApp extends StatelessWidget {
           home: DefaultTabController(
             length: 2,
             child: Scaffold(
-              appBar: AppBar(title: Text('킹제임스 흠정역')),
+              appBar: AppBar(
+                  title: Text('킹제임스 흠정역'),
+                  backgroundColor: appState.isDarkMode
+                      ? AppTheme.darkMode.primaryColor
+                      : AppTheme.lightMode.primaryColor),
               drawer: NavDrawer(),
               body: TabBarView(
                 children: <Widget>[

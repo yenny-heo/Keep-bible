@@ -105,7 +105,7 @@ Container _menuText(String text, bool isDark) {
     padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
     child: Text(text, style: TextStyle(
         fontSize: 20,
-      color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
+      color: isDark? AppTheme.darkMode.hintColor : AppTheme.lightMode.hintColor
     )),
   );
 }

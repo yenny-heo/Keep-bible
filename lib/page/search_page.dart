@@ -18,11 +18,11 @@ int totalSearch = 0;
 bool isDark = false;
 
 class SearchInfo {
-  String content;
-  String bookName;
-  int book;
-  int chapter;
-  int verse;
+  late String content;
+  late String bookName;
+  late int book;
+  late int chapter;
+  late int verse;
 
   SearchInfo(content, bookName, book, chapter, verse) {
     this.content = content;
@@ -39,39 +39,50 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchState extends State<SearchPage> {
-  var items = List<SearchInfo>();
+  var items = <SearchInfo>[];
 
   void filterSearchResults(String query) {
     queries = query.split(',');
 
     //bible 선택에 따라 변경
     var searchList = korhkjv;
-    if(bibleOption == 1) searchList = engkjv;
-    else if(bibleOption == 2) searchList = korhrv;
+    if (bibleOption == 1)
+      searchList = engkjv;
+    else if (bibleOption == 2) searchList = korhrv;
 
     if (query.isNotEmpty) {
-      List<SearchInfo> listData = List<SearchInfo>();
+      List<SearchInfo> listData = <SearchInfo>[];
       for (int i = 0; i < searchList.length; i++) {
         for (int j = 0; j < searchList[i].length; j++) {
           for (int k = 0; k < searchList[i][j].length; k++) {
-            if(option == 0 || (option == 1 && i <= 38) || (option == 2 && i > 38) ||
-                (option >= 3 && i == option - 3)){//영역 필터링
+            if (option == 0 ||
+                (option == 1 && i <= 38) ||
+                (option == 2 && i > 38) ||
+                (option >= 3 && i == option - 3)) {
+              //영역 필터링
               String content, bookName;
               int book = i, chapter = j;
               bool flag = false;
-              for(var q in queries){
-                if (!searchList[i][j][k].contains(q)) {//모든 키워드중 하나라도 포함돼있지 않으면 제외
+              for (var q in queries) {
+                if (!searchList[i][j][k].contains(q)) {
+                  //모든 키워드중 하나라도 포함돼있지 않으면 제외
                   flag = true;
                 }
               }
-              if(!flag){
+              if (!flag) {
                 int verse = k;
                 if (i <= 38)
                   bookName = korOldShortB[i];
                 else
                   bookName = korNewShortB[i - 39];
-                content = bookName + (j + 1).toString() + ":" + (k + 1).toString() + " " + searchList[i][j][k];
-                SearchInfo s = SearchInfo(content, bookName, book, chapter, verse);
+                content = bookName +
+                    (j + 1).toString() +
+                    ":" +
+                    (k + 1).toString() +
+                    " " +
+                    searchList[i][j][k];
+                SearchInfo s =
+                    SearchInfo(content, bookName, book, chapter, verse);
                 totalSearch++;
                 listData.add(s);
               }
@@ -82,15 +93,14 @@ class _SearchState extends State<SearchPage> {
       setState(() {
         items.clear();
         items.addAll(listData);
-        if(listData.isNotEmpty) toast("총 $totalSearch개의 일치하는 절을 찾았습니다");
+        if (listData.isNotEmpty) toast("총 $totalSearch개의 일치하는 절을 찾았습니다");
         FocusScope.of(context).unfocus();
         totalSearch = 0;
       });
       if (listData.isEmpty) {
         toast("일치하는 검색어가 없습니다");
       }
-    }
-    else {
+    } else {
       setState(() {
         items.clear();
       });
@@ -99,50 +109,48 @@ class _SearchState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    isDark = Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+    isDark =
+        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Scaffold(
-        appBar: AppBar(title: Text('검색')),
+        appBar: AppBar(
+            title: Text('검색'),
+            backgroundColor: isDark
+                ? AppTheme.darkMode.primaryColor
+                : AppTheme.lightMode.primaryColor),
         body: Container(
           child: Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child:
-                Row(
+                child: Row(
                   children: <Widget>[
                     Expanded(
                         child: TextField(
-                          style: TextStyle(
-                              color: isDark
-                                  ? AppTheme.darkMode.accentColor
-                                  : AppTheme.lightMode.accentColor
-                          ),
-                          onChanged: (val) {
-                            query = val;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "검색",
-                            hintText: "검색",
-                            labelStyle: TextStyle(
-                                color: Colors.grey
-                            ),
-                            hintStyle: TextStyle(
-                                color: Colors.grey
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius:
+                      style: TextStyle(
+                          color: isDark
+                              ? AppTheme.darkMode.hintColor
+                              : AppTheme.lightMode.hintColor),
+                      onChanged: (val) {
+                        query = val;
+                      },
+                      decoration: InputDecoration(
+                        labelText: "검색",
+                        hintText: "검색",
+                        labelStyle: TextStyle(color: Colors.grey),
+                        hintStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(
-                                    color: AppTheme.lightMode.primaryColor,
-                                    width: 2)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius:
+                            borderSide: BorderSide(
+                                color: AppTheme.lightMode.primaryColor,
+                                width: 2)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    width: 2)),
-                          ),
-                        )),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 2)),
+                      ),
+                    )),
                     IconButton(
                       icon: Icon(Icons.search),
                       color: Colors.grey,
@@ -159,20 +167,24 @@ class _SearchState extends State<SearchPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width*0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: DropdownButton<int>(
                       isExpanded: true,
                       value: bibleOption,
                       icon: Icon(Icons.arrow_drop_down),
                       iconSize: 30,
-                      style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
-                      onChanged: (int newOption){
+                      style: TextStyle(
+                          color: isDark
+                              ? AppTheme.darkMode.hintColor
+                              : AppTheme.lightMode.hintColor,
+                          fontSize: 18),
+                      onChanged: (int? newOption) {
                         setState(() {
-                          bibleOption = newOption;
+                          bibleOption = newOption!;
                           filterSearchResults(query);
                         });
                       },
-                      items: searchBibleOption.map((val){
+                      items: searchBibleOption.map((val) {
                         return DropdownMenuItem(
                           value: searchBibleOption.indexOf(val),
                           child: Center(child: Text(val)),
@@ -181,65 +193,64 @@ class _SearchState extends State<SearchPage> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.4,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     child: DropdownButton<int>(
                         isExpanded: true,
                         value: option,
                         icon: Icon(Icons.arrow_drop_down),
                         iconSize: 30,
-                        style: TextStyle(color: isDark? AppTheme.darkMode.accentColor:AppTheme.lightMode.accentColor, fontSize: 18),
-                        onChanged: (int newOption){
+                        style: TextStyle(
+                            color: isDark
+                                ? AppTheme.darkMode.hintColor
+                                : AppTheme.lightMode.hintColor,
+                            fontSize: 18),
+                        onChanged: (int? newOption) {
                           setState(() {
-                            option = newOption;
+                            option = newOption!;
                             filterSearchResults(query);
                           });
                         },
-                        items: searchOption.map((val){
+                        items: searchOption.map((val) {
                           return DropdownMenuItem(
                               value: searchOption.indexOf(val),
-                              child:Center(child: Text(val))
-                          );
-                        }).toList()
-                    ),
+                              child: Center(child: Text(val)));
+                        }).toList()),
                   ),
                 ],
               ),
               Expanded(
                   child: Scrollbar(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      itemBuilder: (context, idx) {
-                        return Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 1))
-                            ),
-                            child:
-                            ListTile(
-                              title: RichText(
-                                  text: searchMatch(items[idx].content, isDark)
-                              ),
-                              onTap: () {
-                                var len = verseHistory.length;
-                                verseHistory.add(VerseHistory(items[idx].bookName, items[idx].book, items[idx].chapter, len));
-                                Navigator.push(context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailScreen(
-                                                name: items[idx].bookName,
-                                                book: items[idx].book,
-                                                chapter: items[idx].chapter,
-                                                verse: items[idx].verse,
-                                                idx: len)));
-                              },
-                            )
-                        );
-                      },
-                    ),
-                  )
-              )
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: items.length,
+                  itemBuilder: (context, idx) {
+                    return Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.grey, width: 1))),
+                        child: ListTile(
+                          title: RichText(
+                              text: searchMatch(items[idx].content, isDark)
+                                  as InlineSpan),
+                          onTap: () {
+                            var len = verseHistory.length;
+                            verseHistory.add(VerseHistory(items[idx].bookName,
+                                items[idx].book, items[idx].chapter, len));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                        name: items[idx].bookName,
+                                        book: items[idx].book,
+                                        chapter: items[idx].chapter,
+                                        verse: items[idx].verse,
+                                        idx: len)));
+                          },
+                        ));
+                  },
+                ),
+              ))
             ],
           ),
         ));
@@ -247,7 +258,9 @@ class _SearchState extends State<SearchPage> {
 }
 
 TextStyle negRes(isDark) {
-  return TextStyle(color: isDark ? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor,
+  return TextStyle(
+      color:
+          isDark ? AppTheme.darkMode.hintColor : AppTheme.lightMode.hintColor,
       fontSize: 18,
       backgroundColor: isDark
           ? AppTheme.darkMode.scaffoldBackgroundColor
@@ -255,18 +268,18 @@ TextStyle negRes(isDark) {
 }
 
 TextStyle posRes(isDark) {
-  return TextStyle(color: Colors.white, fontSize: 18,
-      backgroundColor: Color(0xff546fee));
+  return TextStyle(
+      color: Colors.white, fontSize: 18, backgroundColor: Color(0xff546fee));
 }
 
-TextSpan searchMatch(String match, bool isDark) {
+TextSpan? searchMatch(String match, bool isDark) {
   if (query == "" || query == null) {
     return null;
   }
   bool flag = false;
   bool flag2 = false;
-  for(String q in queries){
-    if(match.contains(q)){
+  for (String q in queries) {
+    if (match.contains(q)) {
       flag = true;
       if (match.substring(0, q.length) == q) {
         flag2 = true;
@@ -274,27 +287,22 @@ TextSpan searchMatch(String match, bool isDark) {
             style: posRes(isDark),
             text: match.substring(0, q.length),
             children: [
-              searchMatch(match.substring(q.length), isDark)
-            ]
-        );
-      }
-      else continue;
+              searchMatch(match.substring(q.length), isDark) as InlineSpan
+            ]);
+      } else
+        continue;
     }
   }
-  if(flag == true && flag2 == false){//일치하는 검색어는 있지만 앞에 위치하지 않는 경우, 한칸씩 찾으며 검사
+  if (flag == true && flag2 == false) {
+    //일치하는 검색어는 있지만 앞에 위치하지 않는 경우, 한칸씩 찾으며 검사
     return TextSpan(
         style: negRes(isDark),
         text: match.substring(0, 1),
-        children: [
-          searchMatch(match.substring(1), isDark)
-        ]
-    );
+        children: [searchMatch(match.substring(1), isDark) as InlineSpan]);
   }
-  if(flag == false){//일치하는 검색어가 전혀 없는 경우
-    return TextSpan(
-        style: negRes(isDark),
-        text: match
-    );
+  if (flag == false) {
+    //일치하는 검색어가 전혀 없는 경우
+    return TextSpan(style: negRes(isDark), text: match);
   }
   return null;
 }

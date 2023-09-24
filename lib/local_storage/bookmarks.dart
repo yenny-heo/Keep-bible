@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:keep_bible_app/data/korhkjv.dart';
 import 'package:path_provider/path_provider.dart';
 
-var bookMarks = List();
+var bookMarks = <dynamic>[];
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -21,7 +21,7 @@ Future<File> writeBookmark(List bookMarks) async {
   return file.writeAsString('$bookMarks');
 }
 
-Future<List> readBookmark() async {
+Future<List?> readBookmark() async {
   try {
     final file = await _localFile;
     // Read the file.
@@ -43,11 +43,12 @@ void _initBookMarks(){
   }
 }
 
-void setBookmark(List bookmark){
+void setBookmark(List? bookmark){
   if(bookmark != null) {
     bookMarks = bookmark;
   }
   else{
+    print('init book marks');
     _initBookMarks();
   }
 }

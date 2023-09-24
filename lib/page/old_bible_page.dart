@@ -16,7 +16,7 @@ class OldBible extends StatelessWidget {
 class OldBibleList extends StatelessWidget {
   final List<String> bibles;
 
-  const OldBibleList({Key key, this.bibles}) : super(key: key);
+  const OldBibleList({Key? key, required this.bibles}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,8 @@ class OldBibleList extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 25,
                               color: isDark
-                                  ? AppTheme.darkMode.accentColor
-                                  : AppTheme.lightMode.accentColor))),
+                                  ? AppTheme.darkMode.hintColor
+                                  : AppTheme.lightMode.hintColor))),
                   onTap: () {
                     var len = verseHistory.length;
                     verseHistory.add(VerseHistory(korOldShortB[i], i, 0, len));

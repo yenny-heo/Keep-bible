@@ -8,13 +8,14 @@ import 'package:provider/provider.dart';
 
 import 'verse_page.dart';
 
-List<BookmarkInfo> bookmarkList = List<BookmarkInfo>();
+List<BookmarkInfo> bookmarkList = <BookmarkInfo>[];
 
 class BookmarkInfo {
-  String fullName;
-  String bookName;
-  int book;
-  int chapter;
+  late String fullName;
+  late String bookName;
+  late int book;
+  late int chapter;
+
   BookmarkInfo(fullName, bookName, book, chapter) {
     this.fullName = fullName;
     this.bookName = bookName;
@@ -27,7 +28,7 @@ class BookmarkList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark =
-    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     bookmarkList = [];
     for (int i = 0; i < bookMarks.length; i++) {
       for (int j = 0; j < bookMarks[i].length; j++) {
@@ -48,7 +49,11 @@ class BookmarkList extends StatelessWidget {
       }
     }
     return Scaffold(
-        appBar: AppBar(title: Text('책갈피 목록')),
+        appBar: AppBar(
+            title: Text('책갈피 목록'),
+            backgroundColor: isDark
+                ? AppTheme.darkMode.primaryColor
+                : AppTheme.lightMode.primaryColor),
         body: ListView.builder(
             itemCount: bookmarkList.length,
             itemBuilder: (context, i) {
@@ -61,11 +66,13 @@ class BookmarkList extends StatelessWidget {
                         child: Text(bookmarkList[i].fullName,
                             style: TextStyle(
                                 fontSize: 25,
-                              color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
-                            ))),
+                                color: isDark
+                                    ? AppTheme.darkMode.hintColor
+                                    : AppTheme.lightMode.hintColor))),
                     onTap: () {
                       var len = verseHistory.length;
-                      verseHistory.add(VerseHistory(bookmarkList[i].bookName, bookmarkList[i].book, bookmarkList[i].chapter, len));
+                      verseHistory.add(VerseHistory(bookmarkList[i].bookName,
+                          bookmarkList[i].book, bookmarkList[i].chapter, len));
                       Navigator.push(
                           context,
                           MaterialPageRoute(

@@ -9,14 +9,15 @@ import 'package:provider/provider.dart';
 
 import 'verse_page.dart';
 
-List<HighlightInfo> highlightList = List<HighlightInfo>();
+List<HighlightInfo> highlightList = <HighlightInfo>[];
 
 class HighlightInfo {
-  String fullContent;
-  String bookName;
-  int book;
-  int chapter;
-  int verse;
+  late String fullContent;
+  late String bookName;
+  late int book;
+  late int chapter;
+  late int verse;
+
   HighlightInfo(fullContent, bookName, book, chapter, verse) {
     this.fullContent = fullContent;
     this.bookName = bookName;
@@ -30,19 +31,27 @@ class HighlightList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark =
-    Provider.of<AppStateNotifier>(context, listen: false).getModeState();
+        Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     highlightList = [];
     for (int i = 0; i < highlights.length; i++) {
       for (int j = 0; j < highlights[i].length; j++) {
-        for (int k = 0; k < highlights[i][j].length; k++){
-          if(highlights[i][j][k]){
+        for (int k = 0; k < highlights[i][j].length; k++) {
+          if (highlights[i][j][k]) {
             String fullContent, bookName;
             if (i <= 38) {
               //구약
-              fullContent = korOldB[i] + " " + (j + 1).toString() + ":" + (k+1).toString();
+              fullContent = korOldB[i] +
+                  " " +
+                  (j + 1).toString() +
+                  ":" +
+                  (k + 1).toString();
               bookName = korOldShortB[i];
             } else {
-              fullContent = korNewB[i - 39] + " " + (j + 1).toString() + ":" + (k+1).toString();
+              fullContent = korNewB[i - 39] +
+                  " " +
+                  (j + 1).toString() +
+                  ":" +
+                  (k + 1).toString();
               bookName = korNewShortB[i - 39];
             }
             fullContent += " " + korhkjv[i][j][k];
@@ -53,7 +62,11 @@ class HighlightList extends StatelessWidget {
       }
     }
     return Scaffold(
-        appBar: AppBar(title: Text('밑줄 목록')),
+        appBar: AppBar(
+            title: Text('밑줄 목록'),
+            backgroundColor: isDark
+                ? AppTheme.darkMode.primaryColor
+                : AppTheme.lightMode.primaryColor),
         body: ListView.builder(
             itemCount: highlightList.length,
             itemBuilder: (context, i) {
@@ -63,13 +76,18 @@ class HighlightList extends StatelessWidget {
                           bottom: BorderSide(color: Colors.grey, width: 1))),
                   child: ListTile(
                     title: Text(highlightList[i].fullContent,
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: isDark? AppTheme.darkMode.accentColor : AppTheme.lightMode.accentColor
-                            )),
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: isDark
+                                ? AppTheme.darkMode.hintColor
+                                : AppTheme.lightMode.hintColor)),
                     onTap: () {
                       var len = verseHistory.length;
-                      verseHistory.add(VerseHistory(highlightList[i].bookName, highlightList[i].book, highlightList[i].chapter, len));
+                      verseHistory.add(VerseHistory(
+                          highlightList[i].bookName,
+                          highlightList[i].book,
+                          highlightList[i].chapter,
+                          len));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
