@@ -51,6 +51,7 @@ class BookmarkList extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             title: Text('책갈피 목록'),
+            foregroundColor: Colors.white,
             backgroundColor: isDark
                 ? AppTheme.darkMode.primaryColor
                 : AppTheme.lightMode.primaryColor),

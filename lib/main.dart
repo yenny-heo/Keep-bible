@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                   title: Text('킹제임스 흠정역'),
+                  foregroundColor: Colors.white,
                   backgroundColor: appState.isDarkMode
                       ? AppTheme.darkMode.primaryColor
                       : AppTheme.lightMode.primaryColor),

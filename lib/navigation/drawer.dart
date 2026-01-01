@@ -22,6 +22,9 @@ class _NavDrawerState extends State<NavDrawer> {
     bool isDark =
         Provider.of<AppStateNotifier>(context, listen: false).getModeState();
     return Drawer(
+      backgroundColor: isDark
+          ? AppTheme.darkMode.canvasColor
+          : AppTheme.lightMode.canvasColor,
         child: ListView(
       padding: const EdgeInsets.all(0.0),
       children: <Widget>[

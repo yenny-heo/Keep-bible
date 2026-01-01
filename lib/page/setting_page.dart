@@ -19,6 +19,7 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text('설정'),
+            foregroundColor: Colors.white,
             backgroundColor: isDark
                 ? AppTheme.darkMode.primaryColor
                 : AppTheme.lightMode.primaryColor),

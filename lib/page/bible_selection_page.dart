@@ -17,6 +17,7 @@ class _BibleSelectionState extends State<BibleSelection> {
     return Scaffold(
         appBar: AppBar(
             title: Text('역본 선택'),
+            foregroundColor: Colors.white,
             backgroundColor: isDark
                 ? AppTheme.darkMode.primaryColor
                 : AppTheme.lightMode.primaryColor),
@@ -42,7 +43,7 @@ class _BibleSelectionState extends State<BibleSelection> {
                   },
                 )),
             ListTile(
-                title: _title('KJV 흠정역 영어', isDark),
+                title: _title('KJV (영어)', isDark),
                 leading: Checkbox(
                   value: selectedBible[1],
                   activeColor: AppTheme.lightMode.primaryColor,

@@ -114,6 +114,7 @@ class _SearchState extends State<SearchPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text('검색'),
+            foregroundColor: Colors.white,
             backgroundColor: isDark
                 ? AppTheme.darkMode.primaryColor
                 : AppTheme.lightMode.primaryColor),

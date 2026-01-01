@@ -322,6 +322,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
           onPressed: () => _showBookDialog(),
         ),
+        foregroundColor: Colors.white,
         backgroundColor: isDark
             ? AppTheme.darkMode.primaryColor
             : AppTheme.lightMode.primaryColor,

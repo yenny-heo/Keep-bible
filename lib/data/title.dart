@@ -289,7 +289,7 @@ List searchOption = [
   '요한계시록'
 ];
 
-List searchBibleOption = ['KJV 흠정역 한글', 'KJV 흠정역 영어', '개역 성경'];
+List searchBibleOption = ['KJV 흠정역 한글', 'KJV (영어)', '개역 성경'];
 
 const engOldB = [];
 
